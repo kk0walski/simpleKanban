@@ -4,21 +4,26 @@ import '@atlaskit/css-reset';
 import { DragDropContext } from 'react-beautiful-dnd';
 import initialData from './initial-data';
 import Column from './Column';
+import styled from 'styled-components';
+
+const Container = styled.div`
+    display: flex;
+`;  
+
 export default class App extends Component {
     state = initialData;
 
     onDragEnd = result => {
         const { destination, source, draggableId } = result;
 
-        if(!destination){
+        if (!destination) {
             return
         }
 
         if (
             destination.droppableId === source.droppableId &&
             destination.index === source.index
-        )
-        {
+        ) {
             return
         }
 
@@ -46,12 +51,14 @@ export default class App extends Component {
     render() {
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
-                {this.state.columnOrder.map((columnId) => {
-                    const column = this.state.columns[columnId];
-                    const tasks = column.taskIds.map(taskId => this.state.tasks[taskId])
+                <Container>
+                    {this.state.columnOrder.map((columnId) => {
+                        const column = this.state.columns[columnId];
+                        const tasks = column.taskIds.map(taskId => this.state.tasks[taskId])
 
-                    return <Column key={column.id} column={column} tasks={tasks} />;
-                })}
+                        return <Column key={column.id} column={column} tasks={tasks} />;
+                    })}
+                </Container>
             </DragDropContext>
         );
     }
