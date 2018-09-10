@@ -10,6 +10,16 @@ const Container = styled.div`
     display: flex;
 `;
 
+
+class InnerList extends React.PureComponent {
+    render() {
+        const { column, taskMap, index } = this.props;
+        const tasks = column.taskIds.map(taskId => taskMap[taskId]);
+        return <Column column={column} tasks={tasks} index={index} />
+    }
+}
+
+
 export default class App extends Component {
     state = initialData;
 
@@ -27,7 +37,7 @@ export default class App extends Component {
             return
         }
 
-        if(type === 'column') {
+        if (type === 'column') {
             const newColumnOrder = Array.from(this.state.columnOrder);
             newColumnOrder.splice(source.index, 1);
             newColumnOrder.splice(destination.index, 0, draggableId);
@@ -96,14 +106,12 @@ export default class App extends Component {
                 <Droppable droppableId="all-columns" direction="horizontal" type="column">
                     {(provided) => (
                         <Container
-                        {...provided.droppableProps}
-                        innerRef={provided.innerRef}
+                            {...provided.droppableProps}
+                            innerRef={provided.innerRef}
                         >
                             {this.state.columnOrder.map((columnId, index) => {
                                 const column = this.state.columns[columnId];
-                                const tasks = column.taskIds.map(taskId => this.state.tasks[taskId])
-
-                                return <Column key={column.id} column={column} tasks={tasks} index={index} />;
+                                return <InnerList key={column.id} column={column} taskMap={this.state.tasks} index={index} />;
                             })}
                             {provided.placeholder}
                         </Container>
