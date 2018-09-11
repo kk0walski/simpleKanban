@@ -5,6 +5,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import initialData from './initial-data';
 import Column from './Column';
 import styled from 'styled-components';
+import ListAdder from './ListAdder';
 
 const Container = styled.div`
     display: flex;
@@ -116,6 +117,7 @@ export default class App extends Component {
                                 })}
                             </Container>
                             {provided.placeholder}
+                            <ListAdder/>
                         </div>
                     )}
                 </Droppable>

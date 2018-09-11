@@ -2,8 +2,8 @@
 export const colors = {
     blue: {
       deep: 'rgb(0, 121, 191)',
-      light: 'lightblue',
-      lighter: '#d9fcff',
+      light: '#e3e3e3',
+      lighter: '#e3e3ee',
       soft: '#E6FCFF',
     },
     black: '#4d4d4d',
