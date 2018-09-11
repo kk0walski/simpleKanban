@@ -105,16 +105,18 @@ export default class App extends Component {
             <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="all-columns" direction="horizontal" type="column">
                     {(provided) => (
-                        <Container
-                            {...provided.droppableProps}
-                            innerRef={provided.innerRef}
-                        >
-                            {this.state.columnOrder.map((columnId, index) => {
-                                const column = this.state.columns[columnId];
-                                return <InnerList key={column.id} column={column} taskMap={this.state.tasks} index={index} />;
-                            })}
+                        <div>
+                            <Container
+                                {...provided.droppableProps}
+                                innerRef={provided.innerRef}
+                            >
+                                {this.state.columnOrder.map((columnId, index) => {
+                                    const column = this.state.columns[columnId];
+                                    return <InnerList key={column.id} column={column} taskMap={this.state.tasks} index={index} />;
+                                })}
+                            </Container>
                             {provided.placeholder}
-                        </Container>
+                        </div>
                     )}
                 </Droppable>
             </DragDropContext>
