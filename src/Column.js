@@ -64,12 +64,12 @@ export default class Column extends Component {
                                             isDraggingOver={snapchot.isDraggingOver}
                                         >
                                             <InnerList tasks={this.props.tasks} />
+                                            {provided.placeholder}
                                         </TaskList>
                                     </div>
                                 )}
                             </Droppable>
                         </Container>
-                        {provided.placeholder}
                     </div>
                 )}
             </Draggable>
