@@ -17,7 +17,7 @@ const initalData = {
             cardIds: []
         }
     },
-    listOrder: ['list-1', 'list-2']
+    board: ['list-1', 'list-2']
 }
 
 export default initalData;

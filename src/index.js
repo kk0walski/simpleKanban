@@ -10,7 +10,7 @@ const store = configureStore();
 store.dispatch({
     type: "SET_BOARD",
     payload: {
-        board: initialData
+        data: initialData
     }
 })
 

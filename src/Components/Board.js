@@ -95,9 +95,9 @@ class Board extends Component {
 const mapStateToProps = (state, ownProps) => {
     console.log("STATE: ", state);
     return {
-        listOrder: state.Board.listOrder === undefined ? [] : state.Board.listOrder,
-        lists: state.Board.lists === undefined ? {} : state.Board.lists,
-        cards: state.Board.cards === undefined ? {} : state.Board.cards
+        listOrder: state.Board,
+        lists: state.Lists,
+        cards: state.Cards
     }
 }
 
