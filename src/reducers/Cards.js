@@ -15,25 +15,16 @@ const Cards = (state = {}, action) => {
                 }
             };
         }
-        case "CHANGE_CARD_TITLE": {
-            const { cardId, cardTitle } = action.payload;
+        case "CHANGE_CARD_DATA": {
+            const { cardId, newTitle, newContent} = action.payload;
             return {
                 ...state,
                 [cardId]: {
                     ...state[cardId],
-                    title: cardTitle
+                    title: newTitle,
+                    content: newContent
                 }
-            };
-        }
-        case "CHANGE_CARD_CONTENT": {
-            const { cardId, cardContent } = action.payload;
-            return {
-                ...state,
-                [cardId]: {
-                    ...state[cardId],
-                    content: cardContent
-                }
-            };
+            }
         }
         case "DELETE_CARD": {
             const { cardId } = action.payload;

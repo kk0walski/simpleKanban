@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { connect } from "react-redux";
 import CardAdder from './CardAdder';
 import Card from './Card';
 
@@ -14,13 +15,13 @@ class InnerList extends Component {
 
     render() {
         return this.props.cards.map((card, index) => (
-            <Card key={card.id} card={card} index={index} />
+            <Card key={card.id} card={card} listId={this.props.listId} index={index} />
         ));
     }
 }
 
 
-export default class List extends Component {
+class List extends Component {
     render() {
         return (
             <Draggable draggableId={this.props.list.id} index={this.props.index} disableInteractiveElementBlocking>
@@ -45,7 +46,7 @@ export default class List extends Component {
                                                     backgroundColor: (snapchot.isDraggingOver ? 'skyblue' : 'inherit')
                                                 }}
                                             >
-                                                <InnerList cards={this.props.cards} />
+                                                <InnerList cards={this.props.cards} listId={this.props.list.id}/>
                                                 {provided.placeholder}
                                             </div>
                                         </div>
@@ -60,3 +61,5 @@ export default class List extends Component {
         )
     }
 }
+
+export default connect()(List)
