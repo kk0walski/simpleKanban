@@ -114,9 +114,7 @@ class Card extends Component {
                                 placeholder="Text"
                             />
                         </form>
-                        <div style={{
-                            display: 'flex'
-                        }}>
+                        <div className="container">
                             <button className="successButton" onClick={this.submitCard}>
                                     Submit
                             </button>

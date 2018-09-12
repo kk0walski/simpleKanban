@@ -68,7 +68,7 @@ class Board extends Component {
                     {(provided) => (
                         <div>
                             <div
-                                className="boardContainer"
+                                className="container"
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
                             >

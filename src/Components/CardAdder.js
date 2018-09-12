@@ -1,20 +1,49 @@
 import React, { Component } from 'react';
 import ClickOutside from './ClickOutside';
+import { connect } from "react-redux";
+import shortid from "shortid";
 import Textarea from "react-textarea-autosize";
 
-export default class CardAdder extends Component {
+class CardAdder extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             newTitle: "",
-            newText: "",
+            newContent: "",
             isOpen: false
         };
+        this.addCard = this.addCard.bind(this);
     }
 
     toggleCardComposer = () => {
         this.setState({ isOpen: !this.state.isOpen })
+    }
+
+    titleChange = event => {
+        this.setState({ newTitle: event.target.value });
+    };
+
+    contentChange = event => {
+        this.setState({ newContent: event.target.value });
+    }
+
+    addCard(event) {
+        event.preventDefault();
+        const { dispatch, listId } = this.props;
+        const { newTitle, newContent } = this.state;
+        const cardId = shortid.generate()
+        if(newTitle !== "" && newContent !== "" ){
+            dispatch({
+                type: "ADD_CARD",
+                payload: {
+                    listId,
+                    cardId,
+                    title: newTitle,
+                    content: newContent
+                }
+            })
+        }
     }
 
     render() {
@@ -22,12 +51,13 @@ export default class CardAdder extends Component {
         return isOpen ? (
             <ClickOutside handleClickOutside={this.toggleCardComposer}>
                 <div className="cardContainer">
-                    <form>
+                    <form onSubmit={this.addCard}>
                         <Textarea
                             autoFocus
                             useCacheForDOMMeasurements
                             minRows={1}
                             value={newTitle}
+                            onChange={this.titleChange}
                             placeholder="Title"
                         />
                         <Textarea
@@ -35,8 +65,10 @@ export default class CardAdder extends Component {
                             useCacheForDOMMeasurements
                             minRows={1}
                             value={newText}
+                            onChange={this.contentChange}
                             placeholder="Text"
                         />
+                        <input type="submit" value="ADD CARD" className="successButton" />
                     </form>
                 </div>
             </ClickOutside>
@@ -47,3 +79,5 @@ export default class CardAdder extends Component {
             );
     }
 }
+
+export default connect()(CardAdder)
