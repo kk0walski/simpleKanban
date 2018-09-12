@@ -76,9 +76,9 @@ class Board extends Component {
                                     const list = this.props.lists[listId];
                                     return <InnerList key={list.id} list={list} cardMap={this.props.cards} index={index} />;
                                 })}
+                                {provided.placeholder}
+                                <ListAdder />
                             </div>
-                            {provided.placeholder}
-                            <ListAdder />
                         </div>
                     )}
                 </Droppable>

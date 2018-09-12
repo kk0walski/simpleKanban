@@ -33,7 +33,7 @@ class CardAdder extends Component {
         const { dispatch, listId } = this.props;
         const { newTitle, newContent } = this.state;
         const cardId = shortid.generate()
-        if(newTitle !== "" && newContent !== "" ){
+        if (newTitle !== "" && newContent !== "") {
             dispatch({
                 type: "ADD_CARD",
                 payload: {
