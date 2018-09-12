@@ -87,8 +87,7 @@ class Board extends Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
-    console.log("STATE: ", state);
+const mapStateToProps = (state) => {
     return {
         listOrder: state.Board,
         lists: state.Lists,
