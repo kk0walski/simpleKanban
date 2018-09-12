@@ -66,9 +66,9 @@ export default class Column extends Component {
                                                 isDraggingOver={snapchot.isDraggingOver}
                                             >
                                                 <InnerList tasks={this.props.tasks} />
+                                                <CardAdder columnId={this.props.column.id} tasks={this.props.tasks} />
                                             </TaskList>
                                         </div>
-                                        <CardAdder columnId={this.props.column.id} tasks={this.props.tasks} />
                                         {provided.placeholder}
                                     </div>
                                 )}
