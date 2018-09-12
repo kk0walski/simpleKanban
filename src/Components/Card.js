@@ -5,13 +5,16 @@ export default class Card extends Component {
     render() {
         return (
         <Draggable draggableId={this.props.card.id} index={this.props.index}>
-            {(provided, snapchot) => (
+            {(provided) => (
                 <div 
                 className="cardContainer"
                 ref={provided.innerRef}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
                 >
+                    <div class="cardTitle">
+                    {this.props.card.title}
+                    </div>
                     {this.props.card.content}
                 </div>
             )}

@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
 import ClickOutside from './ClickOutside';
 import Textarea from "react-textarea-autosize";
-import styled from 'styled-components';
-
-const Container = styled.div`
-    border: 1px solid lightgrey;
-    border-radius: 2px;
-    padding: 8px;
-    margin-bottom: 8px;
-    background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
-`;
 
 export default class CardAdder extends Component {
 
@@ -30,7 +21,7 @@ export default class CardAdder extends Component {
         const { newTitle, newText, isOpen } = this.state;
         return isOpen ? (
             <ClickOutside handleClickOutside={this.toggleCardComposer}>
-                <Container>
+                <div className="cardContainer">
                     <form>
                         <Textarea
                             autoFocus
@@ -47,7 +38,7 @@ export default class CardAdder extends Component {
                             placeholder="Text"
                         />
                     </form>
-                </Container>
+                </div>
             </ClickOutside>
         ) : (
                 <button onClick={this.toggleCardComposer} className="add-card-button">

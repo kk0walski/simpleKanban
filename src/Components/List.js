@@ -31,7 +31,7 @@ export default class List extends Component {
                             {...provided.draggableProps}
                             ref={provided.innerRef}
                         >
-                            <h3 className="cardTitle" {...provided.dragHandleProps}>{this.props.list.title}</h3>
+                            <h3 className="listTitle" {...provided.dragHandleProps}>{this.props.list.title}</h3>
                             <Droppable droppableId={this.props.list.id} type="card">
                                 {(provided, snapchot) => (
                                     <div>
