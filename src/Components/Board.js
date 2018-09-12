@@ -4,13 +4,7 @@ import { connect } from "react-redux";
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import '@atlaskit/css-reset';
 import List from './List';
-import styled from 'styled-components';
 import ListAdder from './ListAdder';
-
-const Container = styled.div`
-    display: flex;
-`;
-
 
 class InnerList extends React.PureComponent {
     render() {
@@ -73,15 +67,16 @@ class Board extends Component {
                 <Droppable droppableId="all-lists" direction="horizontal" type="list">
                     {(provided) => (
                         <div>
-                            <Container
+                            <div
+                                className="boardContainer"
                                 {...provided.droppableProps}
-                                innerRef={provided.innerRef}
+                                ref={provided.innerRef}
                             >
                                 {this.props.listOrder.map((listId, index) => {
                                     const list = this.props.lists[listId];
                                     return <InnerList key={list.id} list={list} cardMap={this.props.cards} index={index} />;
                                 })}
-                            </Container>
+                            </div>
                             {provided.placeholder}
                             <ListAdder />
                         </div>

@@ -1,6 +1,8 @@
 @import "../base/settings";
 
+
 .ListContainer {
+    background-color: $listBg;
     display: inline-flex;
     flex-direction: column;
     margin: $grid;
@@ -9,22 +11,6 @@
     transition: background-color 0.1s ease, opacity 0.1s ease;
     user-select: none;
     width: 250px;
-}
-
-.lighter {
-    background-color: $lighterblue
-}
-
-.light {
-    background-color: $lightblue
-}
-
-.halfOpacity {
-    opacity: 0.5
-}
-
-.inheritOpacity {
-    opacity: inherit;
 }
 
 .cardTitle {
@@ -36,14 +22,6 @@
     transition: background-color 0.2s ease;
     flex-grow: 1;
     min-height: 0;
-}
-
-.skyblue {
-    background-color: skyblue;
-}
-
-.inheritColor {
-    background-color: inherit
 }
 
 listTitle {
