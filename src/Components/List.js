@@ -66,13 +66,13 @@ export default class List extends Component {
                                                 isDraggingOver={snapchot.isDraggingOver}
                                             >
                                                 <InnerList cards={this.props.cards} />
-                                                <CardAdder listId={this.props.list.id} cards={this.props.cards} />
+                                                {provided.placeholder}
                                             </CardList>
                                         </div>
-                                        {provided.placeholder}
                                     </div>
                                 )}
                             </Droppable>
+                            <CardAdder listId={this.props.list.id} cards={this.props.cards} />
                         </Container>
                     </div>
                 )}
