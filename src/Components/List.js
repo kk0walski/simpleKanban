@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { grid, colors } from './constants';
 import CardAdder from './CardAdder';
-import Task from './Task';
+import Card from './Card';
 
 const Container = styled.div`
     background-color: ${({ isDraggingOver }) =>
@@ -21,7 +21,7 @@ const Container = styled.div`
 const Title = styled.h3`
     padding: 8px;
 `;
-const TaskList = styled.div`
+const CardList = styled.div`
     padding: 8px;
     transition: background-color 0.2s ease;
     background-color: ${props => (props.isDraggingOver ? 'skyblue' : 'inherit')}
@@ -31,43 +31,43 @@ const TaskList = styled.div`
 
 class InnerList extends Component {
     shouldComponentUpdate(nextProps) {
-        if (nextProps === this.props.tasks) {
+        if (nextProps === this.props.cards) {
             return false;
         }
         return true;
     }
 
     render() {
-        return this.props.tasks.map((task, index) => (
-            <Task key={task.id} task={task} index={index} />
+        return this.props.cards.map((card, index) => (
+            <Card key={card.id} card={card} index={index} />
         ));
     }
 }
 
 
-export default class Column extends Component {
+export default class List extends Component {
     render() {
         return (
-            <Draggable draggableId={this.props.column.id} index={this.props.index} disableInteractiveElementBlocking>
+            <Draggable draggableId={this.props.list.id} index={this.props.index} disableInteractiveElementBlocking>
                 {(provided) => (
                     <div>
                         <Container
                             {...provided.draggableProps}
                             innerRef={provided.innerRef}
                         >
-                            <Title {...provided.dragHandleProps}>{this.props.column.title}</Title>
-                            <Droppable droppableId={this.props.column.id} type="task">
+                            <Title {...provided.dragHandleProps}>{this.props.list.title}</Title>
+                            <Droppable droppableId={this.props.list.id} type="card">
                                 {(provided, snapchot) => (
                                     <div>
                                         <div>
-                                            <TaskList
+                                            <CardList
                                                 innerRef={provided.innerRef}
                                                 {...provided.droppableProps}
                                                 isDraggingOver={snapchot.isDraggingOver}
                                             >
-                                                <InnerList tasks={this.props.tasks} />
-                                                <CardAdder columnId={this.props.column.id} tasks={this.props.tasks} />
-                                            </TaskList>
+                                                <InnerList cards={this.props.cards} />
+                                                <CardAdder listId={this.props.list.id} cards={this.props.cards} />
+                                            </CardList>
                                         </div>
                                         {provided.placeholder}
                                     </div>

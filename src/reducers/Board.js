@@ -4,25 +4,25 @@ const Board = (state = {}, action) => {
             const { listId, title } = action.payload;
             return {
                 ...state,
-                columns: {
-                    ...state.columns,
+                lists: {
+                    ...state.lists,
                     [listId]: {
                         listId,
                         title,
-                        taskIds: []
+                        cardIds: []
                     }
                 },
-                columnOrder: [...state.columnOrder, listId]
+                listOrder: [...state.listOrder, listId]
             }
         };
         case "CHANGE_LIST_NAME": {
             const { listId, listTitle} = action.payload;
             return {
                 ...state,
-                columns: {
-                    ...state.columns,
+                lists: {
+                    ...state.lists,
                     [listId]: {
-                        ...state.columns[listId],
+                        ...state.lists[listId],
                         title: listTitle
                     }
                 }
@@ -30,46 +30,46 @@ const Board = (state = {}, action) => {
         };
         case "MOVE_LIST": {
             const { oldListIndex, newListIndex } = action.payload;
-            const newLists = Array.from(state.columnOrder);
+            const newLists = Array.from(state.listOrder);
             const [removedList] = newLists.splice(oldListIndex, 1);
             newLists.splice(newListIndex, 0, removedList);
             return {
                 ...state,
-                columnOrder: newLists
+                listOrder: newLists
             }
         };
         case "DELETE_LIST": {
             const { list } = action.payload;
-            const { [list]: deleteList, ...restOfLists } = state.columns;
+            const { [list]: deleteList, ...restOfLists } = state.lists;
             return {
                 ...state,
-                tasks: Object.keys(state.tasks)
-                    .filter(myCardId => !deleteList.taskIds.includes(myCardId))
+                cards: Object.keys(state.cards)
+                    .filter(myCardId => !deleteList.cardIds.includes(myCardId))
                     .reduce(
                         (newState, cardId) => ({ ...newState, [cardId]: state[cardId] }),
                         {}
                     ),
-                columns: restOfLists,
-                columnOrder: state.columnOrder.filter(cardId => cardId !== list )
+                lists: restOfLists,
+                listOrder: state.listOrder.filter(cardId => cardId !== list )
             }
         };
         case "ADD_CARD": {
             const { list, cardId, title, content } = action.payload;
             return {
                 ...state,
-                tasks: {
-                    ...state.tasks,
+                cards: {
+                    ...state.cards,
                     [cardId]: {
                         id: cardId,
                         title,
                         content
                     }
                 },
-                columns: {
-                    ...state.columns,
+                lists: {
+                    ...state.lists,
                     [list]: {
-                        ...state.columns[list],
-                        taskIds: [...state.columns[list].taskIds, list]
+                        ...state.lists[list],
+                        cardIds: [...state.lists[list].cardIds, list]
                     }
                 }
             }
@@ -78,10 +78,10 @@ const Board = (state = {}, action) => {
             const { cardId, cardTitle } = action.payload;
             return {
                 ...state,
-                tasks: {
-                    ...state.tasks,
+                cards: {
+                    ...state.cards,
                     [cardId]: {
-                        ...state.tasks[cardId],
+                        ...state.cards[cardId],
                         title: cardTitle
                     }
                 }
@@ -91,10 +91,10 @@ const Board = (state = {}, action) => {
             const { cardId, cardContent } = action.payload;
             return {
                 ...state,
-                tasks: {
-                    ...state.tasks,
+                cards: {
+                    ...state.cards,
                     [cardId]: {
-                        ...state.tasks[cardId],
+                        ...state.cards[cardId],
                         content: cardContent
                     }
                 }
@@ -109,54 +109,57 @@ const Board = (state = {}, action) => {
             } = action.payload;
             // Move within the same list
             if (sourceListId === destListId) {
-                const newCards = Array.from(state.columns[sourceListId].taskIds);
+                const newCards = Array.from(state.lists[sourceListId].cardIds);
                 const [removedCard] = newCards.splice(oldCardIndex, 1);
                 newCards.splice(newCardIndex, 1, removedCard);
                 return {
                     ...state,
-                    columns: {
-                        ...state.columns,
+                    lists: {
+                        ...state.lists,
                         [sourceListId]: {
-                            ...state.columns[sourceListId],
-                            taskIds: newCards
+                            ...state.lists[sourceListId],
+                            cardIds: newCards
                         }
                     }
                 }
             };
             // Move card from one list to another
-            const sourceCards = Array.from(state[sourceListId].taskIds);
+            const sourceCards = Array.from(state[sourceListId].cardIds);
             const [removedCard] = sourceCards.splice(oldCardIndex, 1);
-            const destinationCards = Array.from(state[destListId].taskIds);
+            const destinationCards = Array.from(state[destListId].cardIds);
             destinationCards.splice(newCardIndex, 0, removedCard);
             return {
                 ...state,
-                columns: {
-                    ...state.columns,
+                lists: {
+                    ...state.lists,
                     [sourceListId]: {
-                        ...state.columns[sourceListId],
-                        taskIds: sourceCards
+                        ...state.lists[sourceListId],
+                        cardIds: sourceCards
                     },
                     [destListId]: {
-                        ...state.columns[destListId],
-                        taskIds: destinationCards
+                        ...state.lists[destListId],
+                        cardIds: destinationCards
                     }
                 }
             };
         };
         case "DELETE_CARD": {
             const { list, cardId } = action.payload;
-            const { [cardId]: deleteCard, ...restOfCards } = state.tasks;
+            const { [cardId]: deleteCard, ...restOfCards } = state.cards;
             return {
                 ...state,
-                tasks: restOfCards,
-                columns: {
-                    ...state.columns,
+                cards: restOfCards,
+                lists: {
+                    ...state.lists,
                     [list]: {
-                        ...state.columns[list],
-                        taskIds: state.columns[list].taskIds.filter(card => card !== cardId )
+                        ...state.lists[list],
+                        cardIds: state.lists[list].cardIds.filter(card => card !== cardId )
                     }
                 }
             }
+        }
+        default: {
+            return state;
         }
     }
 };

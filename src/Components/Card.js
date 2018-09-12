@@ -10,10 +10,10 @@ const Container = styled.div`
     background-color: ${props => (props.isDragging ? 'lightgreen' : 'white')};
 `;
 
-export default class Task extends Component {
+export default class Card extends Component {
     render() {
         return (
-        <Draggable draggableId={this.props.task.id} index={this.props.index}>
+        <Draggable draggableId={this.props.card.id} index={this.props.index}>
             {(provided, snapchot) => (
                 <Container 
                 innerRef={provided.innerRef}
@@ -21,7 +21,7 @@ export default class Task extends Component {
                 {...provided.dragHandleProps}
                 isDragging={snapchot.isDragging}
                 >
-                    {this.props.task.content}
+                    {this.props.card.content}
                 </Container>
             )}
         </Draggable>

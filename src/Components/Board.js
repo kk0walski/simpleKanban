@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import '@atlaskit/css-reset';
-import Column from './Column';
+import List from './List';
 import styled from 'styled-components';
 import ListAdder from './ListAdder';
 
@@ -14,21 +14,22 @@ const Container = styled.div`
 
 class InnerList extends React.PureComponent {
     render() {
-        const { column, taskMap, index } = this.props;
-        const tasks = column.taskIds.map(taskId => taskMap[taskId]);
-        return <Column column={column} tasks={tasks} index={index} />
+        const { list, cardMap, index } = this.props;
+        const cards = list.cardIds.map(cardId => cardMap[cardId]);
+        return <List list={list} cards={cards} index={index} />
     }
 }
 
 
 class Board extends Component {
     static propTypes = {
-        columnOrder: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-        columns: PropTypes.object.isRequired,
+        listOrder: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+        lists: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired
     }
 
     onDragEnd = result => {
+        const { dispatch } = this.props;
         const { destination, source, type } = result;
 
         if (!destination) {
@@ -42,7 +43,7 @@ class Board extends Component {
             return
         }
 
-        if (type === 'column') {
+        if (type === 'list') {
             dispatch({
                 type: 'MOVE_LIST',
                 payload: {
@@ -68,16 +69,16 @@ class Board extends Component {
     render() {
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
-                <Droppable droppableId="all-columns" direction="horizontal" type="column">
+                <Droppable droppableId="all-lists" direction="horizontal" type="list">
                     {(provided) => (
                         <div>
                             <Container
                                 {...provided.droppableProps}
                                 innerRef={provided.innerRef}
                             >
-                                {this.props.columnOrder.map((columnId, index) => {
-                                    const column = this.props.columns[columnId];
-                                    return <InnerList key={column.id} column={column} taskMap={this.state.tasks} index={index} />;
+                                {this.props.listOrder.map((listId, index) => {
+                                    const list = this.props.lists[listId];
+                                    return <InnerList key={list.id} list={list} cardMap={this.state.cards} index={index} />;
                                 })}
                             </Container>
                             {provided.placeholder}
@@ -90,10 +91,11 @@ class Board extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
+    console.log("STATE: ", state);
     return {
-        columnOrder: state.columnOrder,
-        columns: state.columns
+        listOrder: state.Board.listOrder === undefined ? [] : state.Board.listOrder,
+        lists: state.Board.lists === undefined ? {} : state.Board.lists
     }
 }
 
