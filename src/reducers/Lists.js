@@ -3,7 +3,7 @@ const Lists = (state = {}, action) => {
         case "SET_BOARD": {
             const { data } = action.payload;
             return data.lists;
-        };
+        }
         case "ADD_LIST": {
             const { listId, title } = action.payload;
             return {
@@ -14,7 +14,7 @@ const Lists = (state = {}, action) => {
                     cards: []
                 }
             };
-        };
+        }
         case "ADD_CARD": {
             const { listId, cardId } = action.payload;
             return {
@@ -34,7 +34,7 @@ const Lists = (state = {}, action) => {
                     title: listTitle
                 }
             }
-        };
+        }
         case "MOVE_CARD": {
             const {
                 oldCardIndex,
@@ -71,7 +71,7 @@ const Lists = (state = {}, action) => {
                     cards: destinationCards
                 }
             };
-        };
+        }
         case "DELETE_CARD": {
             const { listId, cardId } = action.payload;
             return {
@@ -81,7 +81,7 @@ const Lists = (state = {}, action) => {
                     cards: state[listId].cards.filter(card => card !== cardId)
                 }
             };
-        };
+        }
         case "DELETE_LIST": {
             const { listId } = action.payload;
             const { [listId]: deleteList, ...restOfLists } = state;
@@ -89,7 +89,7 @@ const Lists = (state = {}, action) => {
         }
         default: {
             return state
-        };
+        }
     }
 }
 

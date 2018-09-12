@@ -14,7 +14,7 @@ const Cards = (state = {}, action) => {
                     content
                 }
             };
-        };
+        }
         case "CHANGE_CARD_TITLE": {
             const { cardId, cardTitle } = action.payload;
             return {
@@ -24,7 +24,7 @@ const Cards = (state = {}, action) => {
                     title: cardTitle
                 }
             };
-        };
+        }
         case "CHANGE_CARD_CONTENT": {
             const { cardId, cardContent } = action.payload;
             return {
@@ -34,12 +34,12 @@ const Cards = (state = {}, action) => {
                     content: cardContent
                 }
             };
-        };
+        }
         case "DELETE_CARD": {
             const { cardId } = action.payload;
             const { [cardId]: deleteCard, ...restOfCards } = state;
             return restOfCards;
-        };
+        }
         default: {
             return state;
         }

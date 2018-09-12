@@ -15,7 +15,7 @@ const Container = styled.div`
 class InnerList extends React.PureComponent {
     render() {
         const { list, cardMap, index } = this.props;
-        const cards = list.cardIds.map(cardId => cardMap[cardId]);
+        const cards = list.cards.map(cardId => cardMap[cardId]);
         return <List list={list} cards={cards} index={index} />
     }
 }

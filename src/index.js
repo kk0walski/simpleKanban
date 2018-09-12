@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
 import Board from './Components/Board';
 import initialData from './initial-data';
+import './styles/styles.scss';
 
 const store = configureStore();
 

@@ -9,12 +9,12 @@ const initalData = {
         'list-1': {
             id: 'list-1',
             title: 'To do',
-            cardIds: ['card-1', 'card-2', 'card-3', 'card-4'],
+            cards: ['card-1', 'card-2', 'card-3', 'card-4'],
         },
         'list-2': {
             id: 'list-2',
             title: 'In progress',
-            cardIds: []
+            cards: []
         }
     },
     board: ['list-1', 'list-2']
