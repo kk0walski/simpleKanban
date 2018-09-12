@@ -25,6 +25,7 @@ class Board extends Component {
     static propTypes = {
         listOrder: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
         lists: PropTypes.object.isRequired,
+        cards: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired
     }
 
@@ -78,7 +79,7 @@ class Board extends Component {
                             >
                                 {this.props.listOrder.map((listId, index) => {
                                     const list = this.props.lists[listId];
-                                    return <InnerList key={list.id} list={list} cardMap={this.state.cards} index={index} />;
+                                    return <InnerList key={list.id} list={list} cardMap={this.props.cards} index={index} />;
                                 })}
                             </Container>
                             {provided.placeholder}
@@ -95,7 +96,8 @@ const mapStateToProps = (state, ownProps) => {
     console.log("STATE: ", state);
     return {
         listOrder: state.Board.listOrder === undefined ? [] : state.Board.listOrder,
-        lists: state.Board.lists === undefined ? {} : state.Board.lists
+        lists: state.Board.lists === undefined ? {} : state.Board.lists,
+        cards: state.Board.cards === undefined ? {} : state.Board.cards
     }
 }
 

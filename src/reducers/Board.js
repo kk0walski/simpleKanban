@@ -1,5 +1,13 @@
 const Board = (state = {}, action) => {
     switch (action.type) {
+        case "SET_BOARD": {
+            const { board } = action.payload;
+            console.log("newBoard: ", board);
+            return {
+                ...state,
+                ...board
+            }
+        };
         case "ADD_LIST": {
             const { listId, title } = action.payload;
             return {

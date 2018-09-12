@@ -7,6 +7,13 @@ import initialData from './initial-data';
 
 const store = configureStore();
 
+store.dispatch({
+    type: "SET_BOARD",
+    payload: {
+        board: initialData
+    }
+})
+
 render(
     <Provider store={store}>
         <Board />
