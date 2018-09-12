@@ -119,7 +119,7 @@ const Board = (state = {}, action) => {
             if (sourceListId === destListId) {
                 const newCards = Array.from(state.lists[sourceListId].cardIds);
                 const [removedCard] = newCards.splice(oldCardIndex, 1);
-                newCards.splice(newCardIndex, 1, removedCard);
+                newCards.splice(newCardIndex, 0, removedCard);
                 return {
                     ...state,
                     lists: {
@@ -132,9 +132,9 @@ const Board = (state = {}, action) => {
                 }
             };
             // Move card from one list to another
-            const sourceCards = Array.from(state[sourceListId].cardIds);
+            const sourceCards = Array.from(state.lists[sourceListId].cardIds);
             const [removedCard] = sourceCards.splice(oldCardIndex, 1);
-            const destinationCards = Array.from(state[destListId].cardIds);
+            const destinationCards = Array.from(state.lists[destListId].cardIds);
             destinationCards.splice(newCardIndex, 0, removedCard);
             return {
                 ...state,
