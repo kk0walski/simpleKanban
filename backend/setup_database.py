@@ -3,17 +3,17 @@ import sys
 import json
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship
 
 Base = declarative_base()
 
 class Board(Base):
-    __tablename__ = 'Board'
+    __tablename__ = 'board'
 
     id = Column(Integer, primary_key=True)
-    lists = Column(String, nullable=False)
+    listsOrder = Column(String, nullable=False)
+    lists = relationship("List")
 
     @property
     def serialize(self):
@@ -23,11 +23,13 @@ class Board(Base):
         }
 
 class List(Base):
-    __tablename__ = "List"
+    __tablename__ = "list"
 
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
-    cards = Column(String, nullable=False)
+    cardsOrder = Column(String, nullable=False)
+    board = Column(Integer, ForeignKey('board.id'), nullable=False)
+    cards = relationship("Card")
 
     @property
     def serialize(self):
@@ -38,11 +40,12 @@ class List(Base):
         }
 
 class Card(Base):
-    __tablename__ = "Card"
+    __tablename__ = "card"
 
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
     content = Column(String, nullable=False)
+    lista = Column(Integer, ForeignKey('list.id'), nullable=False)
 
     @property
     def serialize(self):
@@ -58,7 +61,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 Base.metadata.create_all(engine)
 session = DBSession()
-board = Board(lists='[]')
+board = Board(listsOrder='[]')
 session.add(board)
 session.commit()
 session.close()
