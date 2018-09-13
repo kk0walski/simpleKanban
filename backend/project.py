@@ -109,8 +109,13 @@ def cruLists():
                     lista1 = session.query(List).filter_by(
                         id=sourceListId).one()
                     lista2 = session.query(List).filter_by(id=destListId).one()
-                    cardsOrder1 = lista1.cardsOrder
-                    cardsOrder2 = lista2.cardsOrder
+                    cardsOrder1 = json.loads(lista1.cardsOrder)
+                    cardsOrder2 = json.loads(lista2.cardsOrder)
+                    card = session.query(Card).filter_by(
+                        id=cardsOrder[oldCardIndex])
+                    card.lista = destListId
+                    session.add(card)
+                    session.commit()
                     moveToList(cardsOrder1, cardsOrder2,
                                oldCardIndex, newCardIndex)
                     lista1.cardsOrder = str(cardsOrder1)
@@ -196,8 +201,7 @@ def rudCard(card_id):
     elif request.method == 'DELETE':
         if request.is_json:
             try:
-                payload = request.get_json()["payload"]
-                listId = payload['listId']
+                listId = editCard.lista
                 lista = session.query(List).filter_by(id=listId).one()
                 cardsOrder = json.loads(lista.cardsOrder)
                 cardsOrder.remove(card_id)
@@ -206,11 +210,12 @@ def rudCard(card_id):
                 session.commit()
                 session.delete(editCard)
                 session.commit()
-                return jsonify(editCard.serialize), 200 
+                return jsonify(editCard.serialize), 200
             except NoResultFound:
                 jsonify({'reasult': 'failure', 'error': 404}), 404
         else:
             return jsonify({'reasult': 'failure', 'error': 400}), 400
+
 
 if __name__ == '__main__':
     app.debug = True

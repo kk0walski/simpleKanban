@@ -28,7 +28,7 @@ class List(Base):
     id = Column(String, primary_key=True)
     title = Column(String, nullable=False)
     cardsOrder = Column(String, nullable=False)
-    board = Column(Integer, ForeignKey('board.id'), nullable=False)
+    board = Column(String, ForeignKey('board.id'), nullable=False)
     cards = relationship("Card", cascade='all,delete-orphan')
 
     @property
@@ -45,7 +45,7 @@ class Card(Base):
     id = Column(String, primary_key=True)
     title = Column(String, nullable=False)
     content = Column(String, nullable=False)
-    lista = Column(Integer, ForeignKey('list.id'), nullable=False)
+    lista = Column(String, ForeignKey('list.id'), nullable=False)
 
     @property
     def serialize(self):
