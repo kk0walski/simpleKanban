@@ -25,7 +25,7 @@ class Board(Base):
 class List(Base):
     __tablename__ = "list"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(String, primary_key=True)
     title = Column(String, nullable=False)
     cardsOrder = Column(String, nullable=False)
     board = Column(Integer, ForeignKey('board.id'), nullable=False)
@@ -42,7 +42,7 @@ class List(Base):
 class Card(Base):
     __tablename__ = "card"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(String, primary_key=True)
     title = Column(String, nullable=False)
     content = Column(String, nullable=False)
     lista = Column(Integer, ForeignKey('list.id'), nullable=False)

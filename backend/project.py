@@ -45,16 +45,7 @@ def board():
         return jsonify({'reasult': 'failuse', 'error': 404}), 404
 
 
-@app.route('/api/lists/<string:newTitle>', methods=["POST"])
-def addList(newTitle):
-    if request.method == "POST":
-        lista = List(title=newTitle, cardsOrder='[]', board=1)
-        session.add(lista)
-        session.commit()
-        return jsonify(lista), 200
-
-
-@app.route('/api/lists/<int:list_id>/<string:listTitle>', methods=['POST'])
+@app.route('/api/lists/<string:list_id>/<string:listTitle>', methods=['POST'])
 def editList(list_id, listTitle):
     try:
         lista = session.query(List).filter_by(id=list_id).one()
@@ -64,10 +55,15 @@ def editList(list_id, listTitle):
             session.commit
             return jsonify(lista.serialize), 200
     except NoResultFound:
+        if request.method == "POST":
+            lista = List(title=listTitle, cardsOrder='[]', board=1)
+            session.add(lista)
+            session.commit()
+            return jsonify(lista), 200
         return jsonify({'reasult': 'failuse', 'error': 404}), 404
 
 
-@app.route('/api/lists/<int:list_id>', methods=['GET', 'DELETE'])
+@app.route('/api/lists/<string:list_id>', methods=['GET', 'DELETE'])
 def getPostList(list_id):
     try:
         lista = session.query(List).filter_by(id=list_id).one()
@@ -108,16 +104,37 @@ def moveList(oldIndex, newIndex):
             return jsonify({'reasult': 'failuse', 'error': 404}), 404
 
 
-@app.route('/api/cards/<int:list_id>/<string:cardTitle>/<string:cardContent>', methods=['POST'])
-def addCard(list_id, cardTitle, cardContent):
+@app.route('/api/cards/<string:list_id>/<string:cardId>/<string:cardTitle>/<string:cardContent>', methods=['POST'])
+def addCard(list_id, cardId, cardTitle, cardContent):
     if request.method == "POST":
-        card = Card(title=cardTitle, content=cardContent, lista=list_id)
-        session.add(card)
-        session.commit()
-        return jsonify(card.serialize), 200
+        try:
+            lista = session.query(List).filter_by(id=list_id).one()
+            cardIds = json.loards(lista.cardsOrder)
+            cardIds.append(cardId)
+            session.add(lista)
+            session.commit()
+            card = Card(id=cardId, title=cardTitle, content=cardContent, lista=list_id)
+            session.add(card)
+            session.commit()
+            return jsonify(card.serialize), 200
+        except NoResultFound:
+            return jsonify({'reasult': 'failuse', 'error': 404}), 404
+
+@app.route('/api/cards/<string:card_id>/<string:newTitle>/<string:newContent>', methods=['POST'])
+def editCard(cardId, newTitle, newContent):
+    if request.method == "POST":
+        try:
+            card = session.query(Card).filter_by(id=cardId).one()
+            card.title = newTitle
+            card.content = newContent
+            session.add(card)
+            session.commit()
+            return jsonify(card), 200
+        except NoResultFound:
+            return jsonify({'reasult': 'failuse', 'error': 404}), 404
 
 
-@app.route('/api/cards/<int:list_id>', methods=['GET'])
+@app.route('/api/cards/<string:card_id>', methods=['GET'])
 def getCard(card_id):
     if request.methods == 'GET':
         try:
@@ -125,7 +142,6 @@ def getCard(card_id):
             return jsonify(card), 200
         except NoResultFound:
             return jsonify({'reasult': 'failuse', 'error': 404}), 404
-
 
 if __name__ == '__main__':
     app.debug = True
