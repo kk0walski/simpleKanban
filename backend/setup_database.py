@@ -59,11 +59,3 @@ engine = create_engine('sqlite:///board.db')
 
 Base.metadata.bind = engine
 Base.metadata.create_all(engine)
-
-def createTable():
-    DBSession = sessionmaker(bind=engine)
-    session = DBSession()
-    board = Board(listsOrder='[]')
-    session.add(board)
-    session.commit()
-    session.close()
