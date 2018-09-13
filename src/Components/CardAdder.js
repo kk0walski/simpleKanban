@@ -3,6 +3,7 @@ import ClickOutside from './ClickOutside';
 import { connect } from "react-redux";
 import shortid from "shortid";
 import Textarea from "react-textarea-autosize";
+import { startAddCard } from '../actions/dataActions';
 
 class CardAdder extends Component {
 
@@ -30,11 +31,11 @@ class CardAdder extends Component {
 
     addCard(event) {
         event.preventDefault();
-        const { dispatch, listId } = this.props;
+        const { listId } = this.props;
         const { newTitle, newContent } = this.state;
         const cardId = shortid.generate()
         if (newTitle !== "" && newContent !== "") {
-            dispatch({
+            this.props.startAddCard({
                 type: "ADD_CARD",
                 payload: {
                     listId,
@@ -80,4 +81,8 @@ class CardAdder extends Component {
     }
 }
 
-export default connect()(CardAdder)
+const mapDispatchToProps = (dispatch) => ({
+    startAddCard: (acttion) => dispatch(startAddCard(acttion))
+  });
+
+export default connect(undefined, mapDispatchToProps)(CardAdder)

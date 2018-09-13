@@ -3,6 +3,7 @@ import ClickOutside from './ClickOutside';
 import { connect } from "react-redux";
 import shortid from "shortid";
 import Textarea from "react-textarea-autosize";
+import { startAddList } from '../actions/dataActions';
 
 class ListAdder extends Component {
 
@@ -34,10 +35,9 @@ class ListAdder extends Component {
   };
   handleSubmit = () => {
     const { listTitle } = this.state;
-    const { dispatch } = this.props;
     const listId = shortid.generate();
     if (listTitle === "") return;
-    dispatch({
+    this.props.startAddList({
       type: "ADD_LIST",
       payload: {
         listId,
@@ -78,4 +78,8 @@ class ListAdder extends Component {
   };
 }
 
-export default connect()(ListAdder)
+const mapDispatchToProps = (dispatch) => ({
+  startAddList: (acttion) => dispatch(startAddList(acttion))
+});
+
+export default connect(undefined, mapDispatchToProps)(ListAdder)

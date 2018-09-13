@@ -3,6 +3,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import ClickOutside from './ClickOutside';
 import { connect } from "react-redux";
 import Textarea from "react-textarea-autosize";
+import { startDeleteCard, startUpdateCard } from '../actions/dataActions';
 
 class Card extends Component {
 
@@ -39,11 +40,11 @@ class Card extends Component {
     };
 
     handleDelete = () => {
-        const { listId, card, dispatch } = this.props;
-        dispatch({
+        const { listId, card } = this.props;
+        this.props.startDeleteCard({
             type: "DELETE_CARD",
             payload: {
-                listId,
+                id: listId,
                 cardId: card.id
             }
         })
@@ -51,14 +52,14 @@ class Card extends Component {
 
     submitCard = () => {
         const { newTitle, newContent } = this.state;
-        const { card, dispatch } = this.props;
+        const { card } = this.props;
         if (newTitle === "" && newContent === "") {
             this.handleDelete();
         } else if (newTitle !== card.title || newContent !== card.content ) {
-            dispatch({
+            this.props.startUpdateCard({
                 type: "CHANGE_CARD_DATA",
                 payload: {
-                    cardId: card.id,
+                    id: card.id,
                     newTitle,
                     newContent
                 }
@@ -129,4 +130,9 @@ class Card extends Component {
     }
 }
 
-export default connect()(Card)
+const mapDispatchToProps = (dispatch) => ({
+    startDeleteCard: (action) => dispatch(startDeleteCard(action)),
+    startUpdateCard: (action) => dispatch(startUpdateCard(action))
+})
+
+export default connect(undefined, mapDispatchToProps)(Card)
