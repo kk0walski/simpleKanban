@@ -13,7 +13,7 @@ class Board(Base):
     __tablename__ = 'Board'
 
     id = Column(Integer, primary_key=True)
-    lists = Column(String, nullable=True)
+    lists = Column(String, nullable=False)
 
     @property
     def serialize(self):

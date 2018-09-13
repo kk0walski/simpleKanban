@@ -23,6 +23,11 @@ def json():
     print(content)
     return jsonify(content)
 
+@app.route('/api/board', methods=['GET'])
+def board():
+    board = session.query(Board).first()
+    return jsonify(board.serialize["lists"])
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
