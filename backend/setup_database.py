@@ -19,7 +19,7 @@ class Board(Base):
     def serialize(self):
         return {
             'id': self.id,
-            'lists': json.loads(self.lists)
+            'lists': json.loads(self.listsOrder)
         }
 
 class List(Base):
@@ -36,7 +36,7 @@ class List(Base):
         return {
             'id': self.id,
             'title': self.title,
-            'cards': json.loads(self.lists)
+            'cards': json.loads(self.cardsOrder)
         }
 
 class Card(Base):

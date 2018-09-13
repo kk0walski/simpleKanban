@@ -6,4 +6,6 @@ class API {
         this.url = url
         this.endpoints
     }
+
+    createFlaskEnd
 }
