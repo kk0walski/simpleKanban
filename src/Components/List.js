@@ -41,7 +41,6 @@ class List extends Component {
                                                 className="cardList"
                                                 ref={provided.innerRef}
                                                 {...provided.droppableProps}
-                                                isDraggingOver={snapchot.isDraggingOver}
                                                 style={{
                                                     backgroundColor: (snapchot.isDraggingOver ? 'skyblue' : 'inherit')
                                                 }}

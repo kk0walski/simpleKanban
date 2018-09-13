@@ -82,7 +82,7 @@ class Card extends Component {
                                 this.handleClick(event);
                             }}
                         >
-                            <div class="cardTitle">
+                            <div className="cardTitle">
                                 {this.props.card.title}
                             </div>
                             {this.props.card.content}

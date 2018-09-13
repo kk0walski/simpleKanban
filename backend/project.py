@@ -13,6 +13,13 @@ session = DBSession()
 def hello_world():
     return 'Hello, World!'
 
+@app.route('/api', methods=['POST'])
+def json():
+    print(request.is_json)
+    content = request.get_json()
+    print(content)
+    return jsonify(content)
+
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
     app.debug = True

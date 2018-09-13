@@ -8,6 +8,11 @@ import './styles/styles.scss';
 
 const store = configureStore();
 
+fetch('http://0.0.0.0:5000/api', {
+    method: 'post',
+    body: JSON.stringify(initialData)
+}).then(response => console.log(response.json))
+
 store.dispatch({
     type: "SET_BOARD",
     payload: {
