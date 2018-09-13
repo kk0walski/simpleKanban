@@ -13,7 +13,7 @@ class Board(Base):
 
     id = Column(Integer, primary_key=True)
     listsOrder = Column(String, nullable=False)
-    lists = relationship("List")
+    lists = relationship("List", cascade='all,delete-orphan')
 
     @property
     def serialize(self):
@@ -29,7 +29,7 @@ class List(Base):
     title = Column(String, nullable=False)
     cardsOrder = Column(String, nullable=False)
     board = Column(Integer, ForeignKey('board.id'), nullable=False)
-    cards = relationship("Card")
+    cards = relationship("Card", cascade='all,delete-orphan')
 
     @property
     def serialize(self):
@@ -58,10 +58,12 @@ class Card(Base):
 engine = create_engine('sqlite:///board.db')
 
 Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
 Base.metadata.create_all(engine)
-session = DBSession()
-board = Board(listsOrder='[]')
-session.add(board)
-session.commit()
-session.close()
+
+def createTable():
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
+    board = Board(listsOrder='[]')
+    session.add(board)
+    session.commit()
+    session.close()
