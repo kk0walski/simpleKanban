@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware compose } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import Board from '../reducers/Board';
 import Cards from '../reducers/Cards';
 import Lists from '../reducers/Lists';

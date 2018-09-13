@@ -3,10 +3,12 @@ import api from './api'
 const myApi = api()
 
 export const startMoveList = (action = {}) => {
-    myApi.endpoints.board.updateAll(action).then(res => {
-        dispatch(action)
-        console.log(res.data)
-    })
+    return (dispatch) => (
+        myApi.endpoints.board.updateAll(action).then(res => {
+            dispatch(action)
+            console.log(res.data)
+        })
+    )
 }
 
 export const startAddList = (action = {})  => {
