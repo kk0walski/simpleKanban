@@ -4,14 +4,15 @@ import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
 import Board from './Components/Board';
 import initialData from './initial-data';
+import axios from 'axios';
 import './styles/styles.scss';
 
 const store = configureStore();
 
-fetch('http://0.0.0.0:5000/api', {
-    method: 'post',
-    body: JSON.stringify(initialData)
-}).then(response => console.log(response.json))
+axios.post('http://0.0.0.0:5000/api', { ...initialData }).then(res => {
+    console.log(res);
+    console.log(res.data);
+})
 
 store.dispatch({
     type: "SET_BOARD",
