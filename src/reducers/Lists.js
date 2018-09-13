@@ -26,11 +26,11 @@ const Lists = (state = {}, action) => {
             }
         }
         case "CHANGE_LIST_NAME": {
-            const { listId, listTitle } = action.payload;
+            const { id, listTitle } = action.payload;
             return {
                 ...state,
-                [listId]: {
-                    ...state[listId],
+                [id]: {
+                    ...state[id],
                     title: listTitle
                 }
             }
@@ -73,18 +73,18 @@ const Lists = (state = {}, action) => {
             };
         }
         case "DELETE_CARD": {
-            const { listId, cardId } = action.payload;
+            const { listId, id } = action.payload;
             return {
                 ...state,
                 [listId]: {
                     ...state[listId],
-                    cards: state[listId].cards.filter(card => card !== cardId)
+                    cards: state[listId].cards.filter(card => card !== id)
                 }
             };
         }
         case "DELETE_LIST": {
-            const { listId } = action.payload;
-            const { [listId]: deleteList, ...restOfLists } = state;
+            const { id } = action.payload;
+            const { [id]: deleteList, ...restOfLists } = state;
             return restOfLists;
         }
         default: {

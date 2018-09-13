@@ -16,19 +16,19 @@ const Cards = (state = {}, action) => {
             };
         }
         case "CHANGE_CARD_DATA": {
-            const { cardId, newTitle, newContent} = action.payload;
+            const { id, newTitle, newContent} = action.payload;
             return {
                 ...state,
-                [cardId]: {
-                    ...state[cardId],
+                [id]: {
+                    ...state[id],
                     title: newTitle,
                     content: newContent
                 }
             }
         }
         case "DELETE_CARD": {
-            const { cardId } = action.payload;
-            const { [cardId]: deleteCard, ...restOfCards } = state;
+            const { id } = action.payload;
+            const { [id]: deleteCard, ...restOfCards } = state;
             return restOfCards;
         }
         default: {

@@ -16,8 +16,8 @@ const Board = (state = [], action) => {
             return newLists
         }
         case "DELETE_LIST": {
-            const { listId } = action.payload;
-            return state.filter(list => list !== listId)
+            const { id } = action.payload;
+            return state.filter(list => list !== id)
         }
         default: {
             return state;

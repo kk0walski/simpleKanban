@@ -24,12 +24,20 @@ class API {
 
         endpoints.updateAll = (toUpdate) => axios.put(resourceURL, toUpdate)
 
-        endpoints.getOne = ({ id }) => axios.get(`${resourceURL}/${id}`)
+        endpoints.getOne = (toGet) => axios.get(`${resourceURL}/${toGet.payload.id}`)
 
         endpoints.create = (toCreate) => axios.post(resourceURL, toCreate)
 
         endpoints.update = (toUpdate) => axios.put(`${resourceURL}/${toUpdate.payload.id}`, toUpdate)
 
         endpoints.delete = (toDelete) => axios.delete(`${resourceURL}/${toDelete.payload.id}`)
+
+        return endpoints
     }
+}
+
+export default () => {
+    const api = new API({url: 'http://0.0.0.0:5000/api'})
+    api.createEntities(['board', 'lists', 'cards'])
+    return api
 }
