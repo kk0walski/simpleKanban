@@ -4,7 +4,7 @@ class API {
 
     constructor({ url }){
         this.url = url
-        this.endpoints
+        this.endpoints = {}
     }
 
     createEntity(entity) {
@@ -12,7 +12,8 @@ class API {
     }
 
     createEntities(arrayOfEntity){
-        arrayOfEntity.foreach(this.createEntity.bind(this))
+        
+        arrayOfEntity.forEach(this.createEntity.bind(this))
     }
 
     createBasicCRUDEndpoints( {name} ){
