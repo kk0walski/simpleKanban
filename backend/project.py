@@ -80,18 +80,27 @@ def cruLists():
         return jsonify(reasult), 200
     elif request.method == 'POST':
         if request.is_json:
-            payload = request.get_json()["payload"]
-            lista = List(
-                id=payload['listId'], title=payload['title'], cardsOrder='[]', board=1)
-            session.add(lista)
-            session.commit()
-            return jsonify(lista.serialize), 200
+            try:
+                payload = request.get_json()["payload"]
+                board = session.query(Board).first()
+                lists = json.loads(board.listsOrder)
+                lists.append(payload['listId'])
+                board.listsOrder = str(lists)
+                session.add(board)
+                session.commit()
+                lista = List(
+                    id=payload['listId'], title=payload['title'], cardsOrder='[]', board=1)
+                session.add(lista)
+                session.commit()
+                return jsonify({'list': lista.serialize, 'board': board.serialize}), 200
+            except NoResultFound:
+                return jsonify({'reasult': 'failuse', 'error': 404}), 404
         else:
             return jsonify({'reasult': 'failure', 'error': 400}), 400
     elif request.method == 'PUT':
         if request.is_json:
             try:
-                payload = payload = request.get_json()["payload"]
+                payload = request.get_json()["payload"]
                 oldCardIndex = payload['oldCardIndex']
                 newCardIndex = payload['newCardIndex']
                 sourceListId = payload['sourceListId']
@@ -170,12 +179,21 @@ def crCards():
         return jsonify(reasult), 200
     if request.method == 'POST':
         if request.is_json:
-            payload = request.get_json()["payload"]
-            newCard = Card(id=payload['cardId'], title=payload['title'],
-                           content=payload['content'], lista=payload['listId'])
-            session.add(newCard)
-            session.commit()
-            return jsonify(newCard.serialize), 200
+            try:
+                payload = request.get_json()["payload"]
+                lista = session.query(List).filter_by(id=payload['listId']).one()
+                cards = json.loads(lista.cardsOrder)
+                cards.append(payload['cardId'])
+                lista.cardsOrder = str(cards)
+                session.add(lista)
+                session.commit()
+                newCard = Card(id=payload['cardId'], title=payload['title'],
+                            content=payload['content'], lista=payload['listId'])
+                session.add(newCard)
+                session.commit()
+                return jsonify({'card': newCard.serialize, 'list': lista.serialize }), 200
+            except NoResultFound:
+                return jsonify({'reasult': 'failuse', 'error': 404}), 404
         else:
             return jsonify({'reasult': 'failure', 'error': 400}), 400
 
