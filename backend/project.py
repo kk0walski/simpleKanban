@@ -133,6 +133,53 @@ def editCard(cardId, newTitle, newContent):
         except NoResultFound:
             return jsonify({'reasult': 'failuse', 'error': 404}), 404
 
+def moveToList(lista1, lista2, oldIndex, newIndex):
+    lista2.insert(newIndex, lista1.pop(oldIndex))
+
+@app.route('/api/lists/move/<string:sourceListId>/<string:destListId>/<int:oldCardIndex>/<int:newCardIndex>', methods=['POST'])
+def moveCard(sourceListId, destListId, oldCardIndex, newCardIndex):
+    if request.method == 'POST':
+        try:
+            if sourceListId == destListId:
+                lista1 = session.query(List).filter_by(id=sourceListId).one()
+                cardsOrder = json.loads(lista1.cardsOrder)
+                moveInPlace(cardsOrder, oldCardIndex, newCardIndex)
+                lista1.cardsOrder=str(cardsOrder)
+                session.add(lista1)
+                session.commit()
+                return jsonify({'reasult': 'success'}), 200
+            else:
+                lista1 = session.query(List).filter_by(id=sourceListId).one()
+                lista2 = session.query(List).filter_by(id=destListId).one()
+                cardsOrder1 = lista1.cardsOrder
+                cardsOrder2 = lista2.cardsOrder
+                moveToList(cardsOrder1, cardsOrder2, oldCardIndex, newCardIndex)
+                lista1.cardsOrder = str(cardsOrder1)
+                lista2.cardsOrder = str(cardsOrder2)
+                session.add(lista1)
+                session.commit()
+                session.add(lista2)
+                session.commit()
+                return jsonify({'reasult': 'success'}), 200
+        except NoResultFound:
+            return jsonify({'reasult': 'failuse', 'error': 404}), 404
+
+@app.route('/api/cards/<string:list_id>/<string:cardId>', methods=["DELETE"])
+def deleteCard(list_id, card_id):
+    if request.method == 'DELETE':
+        try:
+            lista = session.query(List).filter_by(id=list_id).one()
+            cardsOrder = json.loads(lista.cardsOrder)
+            cardsOrder.remove(card_id)
+            lista.cardsOrder = str(cardsOrder)
+            session.add(lista)
+            session.commit()
+            card = session.query(Card).filter_by(id=card_id).one()
+            session.delete(card)
+            session.commit()
+            return jsonify({'reasult': 'success'}), 200
+        except NoResultFound:
+            return jsonify({'reasult': 'failuse', 'error': 404}), 404
 
 @app.route('/api/cards/<string:card_id>', methods=['GET'])
 def getCard(card_id):
