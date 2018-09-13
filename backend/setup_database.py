@@ -5,14 +5,15 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 
 class Board(Base):
     __tablename__ = 'Board'
 
-    index = Column(Integer, primary_key=True)
-    lists = Column(String, nullable=False)
+    id = Column(Integer, primary_key=True)
+    lists = Column(String, nullable=True)
 
     @property
     def serialize(self):
@@ -53,4 +54,11 @@ class Card(Base):
 
 engine = create_engine('sqlite:///board.db')
 
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind=engine)
 Base.metadata.create_all(engine)
+session = DBSession()
+board = Board(lists='[]')
+session.add(board)
+session.commit()
+session.close()
