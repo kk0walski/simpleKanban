@@ -85,7 +85,7 @@ def cruLists():
                 id=payload['listId'], title=payload['title'], cardsOrder='[]', board=1)
             session.add(lista)
             session.commit()
-            return jsonify(lista.serialize()), 200
+            return jsonify(lista.serialize), 200
         else:
             return jsonify({'reasult': 'failure', 'error': 400}), 400
     elif request.method == 'PUT':
@@ -166,7 +166,7 @@ def crCards():
         reasult = {}
         cards = session.query(Card).all()
         for card in cards:
-            reasult[card.id] = card.serialize()
+            reasult[card.id] = card.serialize
         return jsonify(reasult), 200
     if request.method == 'POST':
         if request.is_json:
@@ -175,7 +175,7 @@ def crCards():
                            content=payload['content'], lista=payload['listId'])
             session.add(newCard)
             session.commit()
-            return jsonify(newCard.serialize()), 200
+            return jsonify(newCard.serialize), 200
         else:
             return jsonify({'reasult': 'failure', 'error': 400}), 400
 
