@@ -1,6 +1,4 @@
-import api from './api'
-
-const myApi = api()
+import myApi from './api'
 
 export const startMoveList = (action = {}) => {
     return (dispatch) => (
@@ -12,6 +10,7 @@ export const startMoveList = (action = {}) => {
 }
 
 export const startAddList = (action = {})  => {
+    console.log(myApi)
     return (dispatch) => (
         myApi.endpoints.lists.create(action).then(res => {
             dispatch(action)

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 class API {
 
-    constructor({ url }){
+    constructor({ url }) {
         this.url = url
         this.endpoints = {}
     }
@@ -11,12 +11,14 @@ class API {
         this.endpoints[entity.name] = this.createBasicCRUDEndpoints(entity)
     }
 
-    createEntities(arrayOfEntity){
-        
-        arrayOfEntity.forEach(this.createEntity.bind(this))
+    createEntities(arrayOfEntity) {
+        arrayOfEntity.forEach((entity) => {
+            this.createEntity.bind(this)
+            this.createEntity(entity)
+        })
     }
 
-    createBasicCRUDEndpoints( {name} ){
+    createBasicCRUDEndpoints({ name }) {
         var endpoints = {}
 
         const resourceURL = `${this.url}/${name}`
@@ -37,8 +39,6 @@ class API {
     }
 }
 
-export default () => {
-    const api = new API({url: 'http://0.0.0.0:5000/api'})
-    api.createEntities(['board', 'lists', 'cards'])
-    return api
-}
+const api = new API({ url: 'http://0.0.0.0:5000/api' })
+api.createEntities([{name: 'board'}, {name: 'lists'}, {name: 'cards'}])
+export { api as default }
