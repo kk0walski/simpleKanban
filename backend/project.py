@@ -49,7 +49,7 @@ def board():
                 board.listsOrder = '[' + ", ".join(lists) + ']'
                 session.add(board)
                 session.commit()
-                return jsonify(board.serialize()), 200
+                return jsonify(board.serialize), 200
             else:
                 return jsonify({'reasult': 'failure', 'error': 400}), 400
     except NoResultFound:
@@ -66,7 +66,7 @@ def cruLists():
         reasult = {}
         lists = session.query(List).all()
         for lista in lists:
-            reasult[lista.id] = lista.serialize()
+            reasult[lista.id] = lista.serialize
         return jsonify(reasult), 200
     elif request.method == 'POST':
         if request.is_json:
@@ -111,7 +111,7 @@ def cruLists():
                     cardsOrder1 = [] if lista1.cardsOrder == '[]' else lista1.cardsOrder[1:-1].split(', ')
                     cardsOrder2 = [] if lista2.cardsOrder == '[]' else lista2.cardsOrder[1:-1].split(', ')
                     card = session.query(Card).filter_by(
-                        id=cardsOrder[oldCardIndex])
+                        id=cardsOrder1[oldCardIndex]).one()
                     card.lista = destListId
                     session.add(card)
                     session.commit()

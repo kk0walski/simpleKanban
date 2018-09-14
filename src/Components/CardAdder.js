@@ -45,6 +45,7 @@ class CardAdder extends Component {
                 }
             })
         }
+        this.toggleCardComposer()
     }
 
     render() {
