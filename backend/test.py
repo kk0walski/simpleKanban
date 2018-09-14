@@ -11,16 +11,17 @@ class FlaskTestCase(unittest.TestCase):
         self.app = create_app(True)
         self.tester = self.app.test_client()
         create('sqlite:///test.db')
-        self.app.config['DATABASE'] = 'sqlite:///test.db'
-        self.app.config['TESTING'] = True
 
     def test_hello(self):
         response = self.tester.get('/', content_type='html/text')
         self.assertEqual(response.status_code, 200)
 
-    def test_get_board(self):
+    def test_empty_board(self):
         response = self.tester.get('/api/board', content_type='json/text')
-        print(response.get_json())
+        message = response.get_json()
+        self.assertEqual(len(message['board']), 0)
+        self.assertFalse(message['cards'])
+        self.assertFalse(message['lists'])
         self.assertEqual(response.status_code, 200)
 
     def tearDown(self):
