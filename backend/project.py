@@ -20,14 +20,6 @@ def hello_world():
     return 'Hello, World!'
 
 
-@app.route('/api', methods=['POST'])
-def json():
-    print(request.is_json)
-    content = request.get_json()
-    print(content)
-    return jsonify(content)
-
-
 def moveInPlace(lista, oldIndex, newIndex):
     lista[oldIndex], lista[newIndex] = lista[newIndex], lista[oldIndex]
 
@@ -83,7 +75,7 @@ def cruLists():
             try:
                 payload = request.get_json()["payload"]
                 board = session.query(Board).first()
-                lists = json.loads(board.listsOrder)
+                lists = json.loads(str(board.listsOrder))
                 lists.append(payload['listId'])
                 board.listsOrder = str(lists)
                 session.add(board)
