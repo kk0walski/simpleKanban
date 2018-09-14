@@ -4,6 +4,7 @@ from setup_database import Board, Base, List, Card
 from project import create_app
 import unittest
 import os
+from jsonDatabase import JSONDatabase
 
 
 class FlaskTestCase(unittest.TestCase):
@@ -12,6 +13,7 @@ class FlaskTestCase(unittest.TestCase):
         self.app = create_app(True)
         self.tester = self.app.test_client()
         create('sqlite:///test.db')
+        self.testDatabase = JSONDatabase()
 
     def test_hello(self):
         response = self.tester.get('/', content_type='html/text')
@@ -20,9 +22,7 @@ class FlaskTestCase(unittest.TestCase):
     def test_empty_board(self):
         response = self.tester.get('/api/board', content_type='json/text')
         message = response.get_json()
-        self.assertEqual(len(message['board']), 0)
-        self.assertFalse(message['cards'])
-        self.assertFalse(message['lists'])
+        self.assertEqual(message, self.testDatabase.getData())
         self.assertEqual(response.status_code, 200)
 
     def delete_list(self, listId, title, length=0):
@@ -33,11 +33,11 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def add_list(self, listId, title, length=1):
-        lista = {'payload': {'listId': listId, 'title': title}}
+        newList = {'listId': listId, 'title': title}
+        lista = {'payload': newList}
         response = self.tester.post('/api/lists', data=json.dumps(lista), content_type='application/json')
         message = response.get_json()
-        self.assertEqual(len(message['board']['lists']), length)
-        self.assertTrue(message['list'])
+        self.assertEqual(message, self.testDatabase.addList(newList))
         self.assertEqual(response.status_code, 200)
 
     def test_add_and_delete_list(self):
@@ -56,7 +56,6 @@ class FlaskTestCase(unittest.TestCase):
     def test_wrong_add(self):
         lista = {'payload': {'listId': 'list-1'}}
         response = self.tester.post('/api/lists', data=json.dumps(lista), content_type='application/json')
-        message = response.get_json()
         self.assertEqual(response.status_code, 400)
 
         
@@ -64,6 +63,7 @@ class FlaskTestCase(unittest.TestCase):
 
     def tearDown(self):
         os.remove('test.db')
+        self.testDatabase.reset()
 
 if __name__ == '__main__':
     unittest.main()
