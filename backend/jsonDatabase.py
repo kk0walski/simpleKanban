@@ -10,13 +10,25 @@ class JSONDatabase:
         reasult = {'board': self.data['board']['lists'], 'cards': self.data['cards'], 'lists': self.data['lists']}
         return reasult
 
+    def deleteList(self, listId):
+        newLists = self.data['board']['lists']
+        newLists.remove(listId)
+        self.data['board']['lists'] = newLists
+        deleteList = self.data['lists'][listId]
+        self.data['lists'].pop(listId)
+        reasult = {
+            'lista': {
+                'id': deleteList['id'], 'title': deleteList['title'], 'cards': deleteList['cards']
+                }, 'lists': self.data['board']
+            }
+        return reasult
+
     def addList(self, payload):
         self.data['board']['lists'].append(payload['listId'])
-        self.data['lists'] = {
-            payload['listId']: {'id': payload['listId'],
-                                'title': payload['title'],
-                                'cards': []
-                                }
+        self.data['lists'][payload['listId']] = {
+            'id': payload['listId'],
+            'title': payload['title'],
+            'cards': []               
         }
         reasult = {
             'board': self.data['board'],

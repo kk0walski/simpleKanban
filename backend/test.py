@@ -25,11 +25,10 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(message, self.testDatabase.getData())
         self.assertEqual(response.status_code, 200)
 
-    def delete_list(self, listId, title, length=0):
+    def delete_list(self, listId):
         response = self.tester.delete('/api/lists/{}'.format(listId), content_type='json/text')
         message = response.get_json()
-        self.assertEqual(message['lista'], {'id': listId, 'title': title, 'cards': []})
-        self.assertEqual(len(message['lists']['lists']), length)
+        self.assertEqual(message, self.testDatabase.deleteList(listId))
         self.assertEqual(response.status_code, 200)
 
     def add_list(self, listId, title):
@@ -51,7 +50,7 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(message['board'], ['list-1', 'list-2'])
         self.assertEqual(response.status_code, 200)
 
-        self.delete_list('list-1', 'list-1', 1)
+        self.delete_list('list-1')
 
     def test_wrong_add(self):
         lista = {'payload': {'listId': 'list-1'}}
