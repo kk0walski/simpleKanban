@@ -47,7 +47,8 @@ def board():
             payload = request.get_json()["payload"]
             oldIndex = payload['oldListIndex']
             newIndex = payload['newListIndex']
-            lists = [] if board.listsOrder == '[]' else board.listsOrder[1:-1].split(', ')
+            lists = [] if board.listsOrder == '[]' else board.listsOrder[1:-
+                                                                         1].split(', ')
             moveInPlace(lists, oldIndex, newIndex)
             board.listsOrder = '[' + ", ".join(lists) + ']'
             session.add(board)
@@ -74,7 +75,8 @@ def cruLists():
             try:
                 payload = request.get_json()["payload"]
                 board = session.query(Board).first()
-                lists = [] if board.listsOrder == '[]' else board.listsOrder[1:-1].split(', ')
+                lists = [] if board.listsOrder == '[]' else board.listsOrder[1:-
+                                                                             1].split(', ')
                 lists.append(payload['listId'])
                 board.listsOrder = '[' + ", ".join(lists) + ']'
                 session.add(board)
@@ -99,7 +101,8 @@ def cruLists():
                 if sourceListId == destListId:
                     lista1 = session.query(List).filter_by(
                         id=sourceListId).one()
-                    cardsOrder = [] if lista1.cardsOrder == '[]' else lista1.cardsOrder[1:-1].split(', ')
+                    cardsOrder = [] if lista1.cardsOrder == '[]' else lista1.cardsOrder[1:-
+                                                                                        1].split(', ')
                     moveInPlace(cardsOrder, oldCardIndex, newCardIndex)
                     lista1.cardsOrder = '[' + ", ".join(cardsOrder) + ']'
                     session.add(lista1)
@@ -109,8 +112,10 @@ def cruLists():
                     lista1 = session.query(List).filter_by(
                         id=sourceListId).one()
                     lista2 = session.query(List).filter_by(id=destListId).one()
-                    cardsOrder1 = [] if lista1.cardsOrder == '[]' else lista1.cardsOrder[1:-1].split(', ')
-                    cardsOrder2 = [] if lista2.cardsOrder == '[]' else lista2.cardsOrder[1:-1].split(', ')
+                    cardsOrder1 = [] if lista1.cardsOrder == '[]' else lista1.cardsOrder[1:-
+                                                                                         1].split(', ')
+                    cardsOrder2 = [] if lista2.cardsOrder == '[]' else lista2.cardsOrder[1:-
+                                                                                         1].split(', ')
                     card = session.query(Card).filter_by(
                         id=cardsOrder[oldCardIndex])
                     card.lista = destListId
@@ -135,29 +140,29 @@ def cruLists():
 def rudList(list_id):
     try:
         editList = session.query(List).filter_by(id=list_id)
+        if request.method == 'PUT':
+            if request.is_json:
+                payload = request.get_json()["payload"]
+                editList.title = payload['listTitle']
+                session.add(editList)
+                session.commit()
+                return jsonify(editList.serialize), 200
+            else:
+                return jsonify({'reasult': 'failure', 'error': 400}), 400
+        elif request.method == 'GET':
+            return jsonify(editList.serialize), 200
+        elif request.method == 'DELETE':
+            board = session.query(Board).first()
+            newLists = [] if board.listsOrder == '[]' else board.listsOrder[1:-1].split(', ')
+            newLists.remove(str(list_id))
+            board.lists = '[' + ", ".join(newLists) + ']'
+            session.add(board)
+            session.commit()
+            session.delete(editList)
+            session.commit()
+            return jsonify({'lista': editList.serialize, 'lists': newLists}), 200
     except NoResultFound:
         jsonify({'reasult': 'failure', 'error': 404}), 404
-    if request.method == 'PUT':
-        if request.is_json:
-            payload = request.get_json()["payload"]
-            editList.title = payload['listTitle']
-            session.add(editList)
-            session.commit()
-            return jsonify(editList.serialize), 200
-        else:
-            return jsonify({'reasult': 'failure', 'error': 400}), 400
-    elif request.method == 'GET':
-        return jsonify(editList.serialize), 200
-    elif request.method == 'DELETE':
-        board = session.query(Board).first()
-        newLists = [] if board.listsOrder == '[]' else board.listsOrder[1:-1].split(', ')
-        newLists.remove(str(list_id))
-        board.lists = '[' + ", ".join(newLists) + ']'
-        session.add(board)
-        session.commit()
-        session.delete(editList)
-        session.commit()
-        return jsonify({'lista': editList.serialize, 'lists': newLists}), 200
 
 
 @app.route('/api/cards', methods=['GET', 'POST'])
@@ -172,17 +177,19 @@ def crCards():
         if request.is_json:
             try:
                 payload = request.get_json()["payload"]
-                lista = session.query(List).filter_by(id=payload['listId']).one()
-                cards = [] if lista.cardsOrder == '[]' else lista.cardsOrder[1:-1].split(', ')
+                lista = session.query(List).filter_by(
+                    id=payload['listId']).one()
+                cards = [] if lista.cardsOrder == '[]' else lista.cardsOrder[1:-
+                                                                             1].split(', ')
                 cards.append(payload['cardId'])
                 lista.cardsOrder = '[' + ", ".join(cards) + ']'
                 session.add(lista)
                 session.commit()
                 newCard = Card(id=payload['cardId'], title=payload['title'],
-                            content=payload['content'], lista=payload['listId'])
+                               content=payload['content'], lista=payload['listId'])
                 session.add(newCard)
                 session.commit()
-                return jsonify({'card': newCard.serialize, 'list': lista.serialize }), 200
+                return jsonify({'card': newCard.serialize, 'list': lista.serialize}), 200
             except NoResultFound:
                 return jsonify({'reasult': 'failuse', 'error': 404}), 404
         else:
@@ -192,38 +199,33 @@ def crCards():
 @app.route('/api/cards/<string:card_id>', methods=['GET', 'PUT', 'DELETE'])
 def rudCard(card_id):
     try:
-        editCard = session.query(Card).filter_by(id=card_id)
-    except NoResultFound:
-        jsonify({'reasult': 'failure', 'error': 404}), 404
-    if request.method == 'PUT':
-        if request.is_json:
-            payload = request.get_json()["payload"]
-            editCard.title = payload['newTitle']
-            editCard.content = payload['newContent']
-            session.add(editCard)
-            session.commit()
-            return jsonify(editCard.serialize), 200
-        else:
-            return jsonify({'reasult': 'failure', 'error': 400}), 400
-    elif request.method == 'GET':
-        return jsonify(editCard.serialize), 200
-    elif request.method == 'DELETE':
-        if request.is_json:
-            try:
-                listId = editCard.lista
-                lista = session.query(List).filter_by(id=listId).one()
-                cardsOrder = [] if lista.cardsOrder == '[]' else lista.cardsOrder[1:-1].split(', ')
-                cardsOrder.remove(card_id)
-                lista.cardsOrder = '[' + ", ".join(cardsOrder) + ']'
-                session.add(lista)
-                session.commit()
-                session.delete(editCard)
+        editCard = session.query(Card).filter_by(id=card_id).one()
+        print(editCard)
+        if request.method == 'PUT':
+            if request.is_json:
+                payload = request.get_json()["payload"]
+                editCard.title = payload['newTitle']
+                editCard.content = payload['newContent']
+                session.add(editCard)
                 session.commit()
                 return jsonify(editCard.serialize), 200
-            except NoResultFound:
-                jsonify({'reasult': 'failure', 'error': 404}), 404
-        else:
-            return jsonify({'reasult': 'failure', 'error': 400}), 400
+            else:
+                return jsonify({'reasult': 'failure', 'error': 400}), 400
+        elif request.method == 'GET':
+            return jsonify(editCard.serialize), 200
+        elif request.method == 'DELETE':
+            listId = editCard.lista
+            lista = session.query(List).filter_by(id=listId).one()
+            cardsOrder = [] if lista.cardsOrder == '[]' else lista.cardsOrder[1:-1].split(', ')
+            cardsOrder.remove(card_id)
+            lista.cardsOrder = '[' + ", ".join(cardsOrder) + ']'
+            session.add(lista)
+            session.commit()
+            session.delete(editCard)
+            session.commit()
+            return jsonify(editCard.serialize), 200
+    except NoResultFound:
+        return jsonify({'reasult': 'failure', 'error': 404}), 404
 
 
 if __name__ == '__main__':

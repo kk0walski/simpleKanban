@@ -44,8 +44,8 @@ class Card extends Component {
         this.props.startDeleteCard({
             type: "DELETE_CARD",
             payload: {
-                id: listId,
-                cardId: card.id
+                listId,
+                id: card.id
             }
         })
     }
