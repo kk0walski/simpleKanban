@@ -138,11 +138,11 @@ def create_app(test_config=False):
     @app.route('/api/lists/<string:list_id>', methods=['PUT', 'GET', 'DELETE'])
     def rudList(list_id):
         try:
-            editList = session.query(List).filter_by(id=list_id)
+            editList = session.query(List).filter_by(id=list_id).one()
             if request.method == 'PUT':
                 if request.is_json:
                     payload = request.get_json()["payload"]
-                    editList.title = payload['listTitle']
+                    editList.title = payload['title']
                     session.add(editList)
                     session.commit()
                     return jsonify(editList.serialize), 200
@@ -153,13 +153,14 @@ def create_app(test_config=False):
             elif request.method == 'DELETE':
                 board = session.query(Board).first()
                 newLists = [] if board.listsOrder == '[]' else board.listsOrder[1:-1].split(', ')
-                newLists.remove(str(list_id))
-                board.lists = '[' + ", ".join(newLists) + ']'
+                newLists.remove(list_id)
+                print(newLists)
+                board.listsOrder = '[' + ", ".join(newLists) + ']'
                 session.add(board)
                 session.commit()
                 session.delete(editList)
                 session.commit()
-                return jsonify({'lista': editList.serialize, 'lists': newLists}), 200
+                return jsonify({'lista': editList.serialize, 'lists': board.serialize }), 200
         except NoResultFound:
             jsonify({'reasult': 'failure', 'error': 404}), 404
 

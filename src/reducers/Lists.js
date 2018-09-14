@@ -26,12 +26,12 @@ const Lists = (state = {}, action) => {
             }
         }
         case "CHANGE_LIST_NAME": {
-            const { id, listTitle } = action.payload;
+            const { id, title } = action.payload;
             return {
                 ...state,
                 [id]: {
                     ...state[id],
-                    title: listTitle
+                    title
                 }
             }
         }

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import Textarea from "react-textarea-autosize";
 import { Button, Wrapper, Menu, MenuItem } from "react-aria-menubutton";
 import { FaTrash } from "react-icons/fa";
+import {startUpdateList, startDeleteList} from '../actions/dataActions';
 
 class ListHeader extends Component {
     static propTypes = {
@@ -35,10 +36,10 @@ class ListHeader extends Component {
     
       handleSubmit = () => {
         const { newTitle } = this.state;
-        const { boardId, listTitle, listId } = this.props;
+        const { listTitle, listId } = this.props;
         if (newTitle === "") return;
         if (newTitle !== listTitle) {
-          this.props.startChangeListName(boardId, listId, newTitle);
+          this.props.startUpdateList(listId, newTitle);
         }
         this.setState({ isOpen: false });
       };
@@ -48,8 +49,8 @@ class ListHeader extends Component {
       };
     
       deleteList = () => {
-        const { listId, boardId } = this.props;
-        this.props.startDeleteList(boardId, listId);
+        const { listId } = this.props;
+        this.props.startDeleteList(listId);
       };
     
       openTitleEditor = () => {
@@ -111,5 +112,9 @@ class ListHeader extends Component {
       }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  startUpdateList: (listId, listTitle) => dispatch(startUpdateList(listId, listTitle)),
+  startDeleteList: (listId) => dispatch(startDeleteList(listId))
+});
 
-export default connect()(ListHeader);
+export default connect(undefined, mapDispatchToProps)(ListHeader);
