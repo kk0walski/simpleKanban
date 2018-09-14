@@ -139,7 +139,7 @@ export const updateCard = (cardId, newTitle, newContent) => ({
 })
 
 export const startUpdateCard = (cardId, newTitle, newContent) => {
-    const action  = updateCard(cardId, newTitle, newContent)
+    const action = updateCard(cardId, newTitle, newContent)
     return (dispatch) => (
         myApi.endpoints.cards.update(action).then(res => {
             dispatch(action)
@@ -148,15 +148,17 @@ export const startUpdateCard = (cardId, newTitle, newContent) => {
     )
 }
 
+export const getBoard = (data) => ({
+    type: 'SET_BOARD',
+    payload: {
+        data: data
+    }
+})
+
 export const startGetBoard = () => {
     return (dispatch) => (
         myApi.endpoints.board.getAll().then(res => {
-            dispatch({
-                type: 'SET_BOARD',
-                payload: {
-                    data: res.data
-                }
-            });
+            dispatch(getBoard(res.data));
             console.log(res.data)
         })
     )
