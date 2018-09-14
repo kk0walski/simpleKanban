@@ -53,8 +53,3 @@ class Card(Base):
             'title': self.title,
             'content': self.content
         }
-
-engine = create_engine('sqlite:///board.db')
-
-Base.metadata.bind = engine
-Base.metadata.create_all(engine)
