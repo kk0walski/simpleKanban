@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { connect } from "react-redux";
 import CardAdder from './CardAdder';
+import ListHeader from "./ListHeader";
 import Card from './Card';
 
 
@@ -32,7 +33,11 @@ class List extends Component {
                             {...provided.draggableProps}
                             ref={provided.innerRef}
                         >
-                            <h3 className="listTitle" {...provided.dragHandleProps}>{this.props.list.title}</h3>
+                            <ListHeader
+                                dragHandleProps={provided.dragHandleProps}
+                                listTitle={this.props.list.title}
+                                listId={this.props.list.id}
+                            />
                             <Droppable droppableId={this.props.list.id} type="card">
                                 {(provided, snapchot) => (
                                     <div>
