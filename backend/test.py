@@ -32,17 +32,17 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(len(message['lists']['lists']), length)
         self.assertEqual(response.status_code, 200)
 
-    def add_list(self, listId, title, length=1):
+    def add_list(self, listId, title):
         newList = {'listId': listId, 'title': title}
-        lista = {'payload': newList}
-        response = self.tester.post('/api/lists', data=json.dumps(lista), content_type='application/json')
+        payload = {'payload': newList}
+        response = self.tester.post('/api/lists', data=json.dumps(payload), content_type='application/json')
         message = response.get_json()
         self.assertEqual(message, self.testDatabase.addList(newList))
         self.assertEqual(response.status_code, 200)
 
     def test_add_and_delete_list(self):
         self.add_list('list-1', 'list-1')
-        self.add_list('list-2', 'list-2', 2)
+        self.add_list('list-2', 'list-2')
 
         response = self.tester.get('/api/board', content_type='json/text')
         message = response.get_json()
@@ -51,7 +51,7 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(message['board'], ['list-1', 'list-2'])
         self.assertEqual(response.status_code, 200)
 
-        self.delete_list('list-1', 'list-1', 1)
+        self.delete_list('list-1', 'list-1')
 
     def test_wrong_add(self):
         lista = {'payload': {'listId': 'list-1'}}
