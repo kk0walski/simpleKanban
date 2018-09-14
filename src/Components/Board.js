@@ -20,8 +20,7 @@ class Board extends Component {
     static propTypes = {
         listOrder: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
         lists: PropTypes.object.isRequired,
-        cards: PropTypes.object.isRequired,
-        dispatch: PropTypes.func.isRequired
+        cards: PropTypes.object.isRequired
     }
 
     constructor(props){
