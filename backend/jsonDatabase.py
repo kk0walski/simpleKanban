@@ -15,6 +15,8 @@ class JSONDatabase:
         newLists.remove(listId)
         self.data['board']['lists'] = newLists
         deleteList = self.data['lists'][listId]
+        for cardId in deleteList['cards']:
+            self.data['cards'].pop(cardId)
         self.data['lists'].pop(listId)
         reasult = {
             'lista': {
