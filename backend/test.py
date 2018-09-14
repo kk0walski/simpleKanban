@@ -15,7 +15,7 @@ class FlaskTestCase(unittest.TestCase):
         create('sqlite:///test.db')
         self.testDatabase = JSONDatabase()
 
-    def test_get(self):
+    def getBoard(self):
         response = self.tester.get('/api/board', content_type='json/text')
         message = response.get_json()
         self.assertEqual(message, self.testDatabase.getData())
@@ -40,13 +40,13 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_empty_board(self):
-        self.test_get()
+        self.getBoard()
 
     def test_add_and_delete_list(self):
         self.add_list('list-1', 'list-1')
         self.add_list('list-2', 'list-2')
 
-        self.test_get()
+        self.getBoard()
 
         self.delete_list('list-1')
 
