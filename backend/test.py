@@ -51,7 +51,7 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(message['board'], ['list-1', 'list-2'])
         self.assertEqual(response.status_code, 200)
 
-        self.delete_list('list-1', 'list-1')
+        self.delete_list('list-1', 'list-1', 1)
 
     def test_wrong_add(self):
         lista = {'payload': {'listId': 'list-1'}}
