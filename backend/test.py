@@ -27,6 +27,14 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(message, self.testDatabase.deleteList(listId))
         self.assertEqual(response.status_code, 200)
 
+    def update_list(self, listId, newTitle):
+        newListData = {'id': listId, 'title': newTitle}
+        payload = {'payload': newListData}
+        response = self.tester.put('/api/lists/{}'.format(listId), data=json.dumps(payload), content_type='application/json')
+        message = response.get_json()
+        self.assertEqual(message, self.testDatabase.updateList(listId, newTitle))
+        self.assertEqual(response.status_code, 200)
+
     def add_list(self, listId, title):
         newList = {'listId': listId, 'title': title}
         payload = {'payload': newList}
@@ -42,12 +50,11 @@ class FlaskTestCase(unittest.TestCase):
     def test_empty_board(self):
         self.getBoard()
 
-    def test_add_and_delete_list(self):
+    def testCRUDList(self):
         self.add_list('list-1', 'list-1')
         self.add_list('list-2', 'list-2')
-
         self.getBoard()
-
+        self.update_list('list-2', 'testing')
         self.delete_list('list-1')
 
     def test_wrong_add(self):

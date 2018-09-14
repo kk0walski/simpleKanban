@@ -23,6 +23,12 @@ class JSONDatabase:
             }
         return reasult
 
+    def updateList(self, listId, newTitle):
+        editList = self.data['lists'][listId]
+        editList['title'] = newTitle
+        self.data['lists'][listId] = editList
+        return editList
+
     def addList(self, payload):
         self.data['board']['lists'].append(payload['listId'])
         self.data['lists'][payload['listId']] = {
