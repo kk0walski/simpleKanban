@@ -1,4 +1,3 @@
-import json
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -48,9 +47,9 @@ def board():
             payload = request.get_json()["payload"]
             oldIndex = payload['oldListIndex']
             newIndex = payload['newListIndex']
-            lists = json.loads(board.listsOrder)
+            lists = [] if board.listsOrder == '[]' else board.listsOrder[1:-1].split(', ')
             moveInPlace(lists, oldIndex, newIndex)
-            board.listsOrder = str(lists)
+            board.listsOrder = '[' + ", ".join(lists) + ']'
             session.add(board)
             session.commit()
             return jsonify(board.serialize()), 200
@@ -75,9 +74,9 @@ def cruLists():
             try:
                 payload = request.get_json()["payload"]
                 board = session.query(Board).first()
-                lists = json.loads(str(board.listsOrder))
+                lists = [] if board.listsOrder == '[]' else board.listsOrder[1:-1].split(', ')
                 lists.append(payload['listId'])
-                board.listsOrder = str(lists)
+                board.listsOrder = '[' + ", ".join(lists) + ']'
                 session.add(board)
                 session.commit()
                 lista = List(
@@ -100,9 +99,9 @@ def cruLists():
                 if sourceListId == destListId:
                     lista1 = session.query(List).filter_by(
                         id=sourceListId).one()
-                    cardsOrder = json.loads(lista1.cardsOrder)
+                    cardsOrder = [] if lista1.cardsOrder == '[]' else lista1.cardsOrder[1:-1].split(', ')
                     moveInPlace(cardsOrder, oldCardIndex, newCardIndex)
-                    lista1.cardsOrder = str(cardsOrder)
+                    lista1.cardsOrder = '[' + ", ".join(cardsOrder) + ']'
                     session.add(lista1)
                     session.commit()
                     return jsonify({'reasult': 'success'}), 200
@@ -110,8 +109,8 @@ def cruLists():
                     lista1 = session.query(List).filter_by(
                         id=sourceListId).one()
                     lista2 = session.query(List).filter_by(id=destListId).one()
-                    cardsOrder1 = json.loads(lista1.cardsOrder)
-                    cardsOrder2 = json.loads(lista2.cardsOrder)
+                    cardsOrder1 = [] if lista1.cardsOrder == '[]' else lista1.cardsOrder[1:-1].split(', ')
+                    cardsOrder2 = [] if lista2.cardsOrder == '[]' else lista2.cardsOrder[1:-1].split(', ')
                     card = session.query(Card).filter_by(
                         id=cardsOrder[oldCardIndex])
                     card.lista = destListId
@@ -119,8 +118,8 @@ def cruLists():
                     session.commit()
                     moveToList(cardsOrder1, cardsOrder2,
                                oldCardIndex, newCardIndex)
-                    lista1.cardsOrder = str(cardsOrder1)
-                    lista2.cardsOrder = str(cardsOrder2)
+                    lista1.cardsOrder = '[' + ", ".join(cardsOrder1) + ']'
+                    lista2.cardsOrder = '[' + ", ".join(cardsOrder2) + ']'
                     session.add(lista1)
                     session.commit()
                     session.add(lista2)
@@ -151,9 +150,9 @@ def rudList(list_id):
         return jsonify(editList.serialize), 200
     elif request.method == 'DELETE':
         board = session.query(Board).first()
-        newLists = json.loads(board.listsOrder)
+        newLists = [] if board.listsOrder == '[]' else board.listsOrder[1:-1].split(', ')
         newLists.remove(str(list_id))
-        board.lists = str(newLists)
+        board.lists = '[' + ", ".join(newLists) + ']'
         session.add(board)
         session.commit()
         session.delete(editList)
@@ -174,9 +173,9 @@ def crCards():
             try:
                 payload = request.get_json()["payload"]
                 lista = session.query(List).filter_by(id=payload['listId']).one()
-                cards = json.loads(lista.cardsOrder)
+                cards = [] if lista.cardsOrder == '[]' else lista.cardsOrder[1:-1].split(', ')
                 cards.append(payload['cardId'])
-                lista.cardsOrder = str(cards)
+                lista.cardsOrder = '[' + ", ".join(cards) + ']'
                 session.add(lista)
                 session.commit()
                 newCard = Card(id=payload['cardId'], title=payload['title'],
@@ -213,9 +212,9 @@ def rudCard(card_id):
             try:
                 listId = editCard.lista
                 lista = session.query(List).filter_by(id=listId).one()
-                cardsOrder = json.loads(lista.cardsOrder)
+                cardsOrder = [] if lista.cardsOrder == '[]' else lista.cardsOrder[1:-1].split(', ')
                 cardsOrder.remove(card_id)
-                lista.cardsOrder = str(cardsOrder)
+                lista.cardsOrder = '[' + ", ".join(cardsOrder) + ']'
                 session.add(lista)
                 session.commit()
                 session.delete(editCard)

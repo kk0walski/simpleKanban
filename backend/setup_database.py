@@ -1,6 +1,5 @@
 import os
 import sys
-import json
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
@@ -19,7 +18,7 @@ class Board(Base):
     def serialize(self):
         return {
             'id': self.id,
-            'lists': json.loads(self.listsOrder)
+            'lists': [] if self.listsOrder == '[]' else self.listsOrder[1:-1].split(', ')
         }
 
 class List(Base):
@@ -36,7 +35,7 @@ class List(Base):
         return {
             'id': self.id,
             'title': self.title,
-            'cards': json.loads(self.cardsOrder)
+            'cards': [] if self.cardsOrder == '[]' else self.cardsOrder[1:-1].split(', ')
         }
 
 class Card(Base):
