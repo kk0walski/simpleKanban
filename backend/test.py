@@ -56,6 +56,7 @@ class FlaskTestCase(unittest.TestCase):
         self.getBoard()
         self.update_list('list-2', 'testing')
         self.delete_list('list-1')
+        self.getBoard()
 
     def test_wrong_add(self):
         lista = {'payload': {'listId': 'list-1'}}
