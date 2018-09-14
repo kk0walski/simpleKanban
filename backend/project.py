@@ -27,11 +27,8 @@ def moveInPlace(lista, oldIndex, newIndex):
 def board():
     try:
         board = session.query(Board).first()
-    except NoResultFound:
-        return jsonify({'reasult': 'board not found', 'error': 404}), 404
-    if request.method == 'GET':
-        reasult = {}
-        try:
+        if request.method == 'GET':
+            reasult = {}
             reasult["board"] = board.serialize["lists"]
             lists = session.query(List).all()
             for i in lists:
@@ -40,22 +37,21 @@ def board():
             for i in cards:
                 reasult["cards"][i.serialize["id"]] = i.serialize
             return jsonify(reasult), 200
-        except NoResultFound:
-            return jsonify({'reasult': 'failuse', 'error': 404}), 404
-    elif request.method == 'PUT':
-        if request.is_json:
-            payload = request.get_json()["payload"]
-            oldIndex = payload['oldListIndex']
-            newIndex = payload['newListIndex']
-            lists = [] if board.listsOrder == '[]' else board.listsOrder[1:-
-                                                                         1].split(', ')
-            moveInPlace(lists, oldIndex, newIndex)
-            board.listsOrder = '[' + ", ".join(lists) + ']'
-            session.add(board)
-            session.commit()
-            return jsonify(board.serialize()), 200
-        else:
-            return jsonify({'reasult': 'failure', 'error': 400}), 400
+        elif request.method == 'PUT':
+            if request.is_json:
+                payload = request.get_json()["payload"]
+                oldIndex = payload['oldListIndex']
+                newIndex = payload['newListIndex']
+                lists = [] if board.listsOrder == '[]' else board.listsOrder[1:-1].split(', ')
+                moveInPlace(lists, oldIndex, newIndex)
+                board.listsOrder = '[' + ", ".join(lists) + ']'
+                session.add(board)
+                session.commit()
+                return jsonify(board.serialize()), 200
+            else:
+                return jsonify({'reasult': 'failure', 'error': 400}), 400
+    except NoResultFound:
+        return jsonify({'reasult': 'board not found', 'error': 404}), 404
 
 
 def moveToList(lista1, lista2, oldIndex, newIndex):
@@ -75,8 +71,7 @@ def cruLists():
             try:
                 payload = request.get_json()["payload"]
                 board = session.query(Board).first()
-                lists = [] if board.listsOrder == '[]' else board.listsOrder[1:-
-                                                                             1].split(', ')
+                lists = [] if board.listsOrder == '[]' else board.listsOrder[1:-1].split(', ')
                 lists.append(payload['listId'])
                 board.listsOrder = '[' + ", ".join(lists) + ']'
                 session.add(board)
@@ -101,8 +96,7 @@ def cruLists():
                 if sourceListId == destListId:
                     lista1 = session.query(List).filter_by(
                         id=sourceListId).one()
-                    cardsOrder = [] if lista1.cardsOrder == '[]' else lista1.cardsOrder[1:-
-                                                                                        1].split(', ')
+                    cardsOrder = [] if lista1.cardsOrder == '[]' else lista1.cardsOrder[1:-1].split(', ')
                     moveInPlace(cardsOrder, oldCardIndex, newCardIndex)
                     lista1.cardsOrder = '[' + ", ".join(cardsOrder) + ']'
                     session.add(lista1)
@@ -112,10 +106,8 @@ def cruLists():
                     lista1 = session.query(List).filter_by(
                         id=sourceListId).one()
                     lista2 = session.query(List).filter_by(id=destListId).one()
-                    cardsOrder1 = [] if lista1.cardsOrder == '[]' else lista1.cardsOrder[1:-
-                                                                                         1].split(', ')
-                    cardsOrder2 = [] if lista2.cardsOrder == '[]' else lista2.cardsOrder[1:-
-                                                                                         1].split(', ')
+                    cardsOrder1 = [] if lista1.cardsOrder == '[]' else lista1.cardsOrder[1:-1].split(', ')
+                    cardsOrder2 = [] if lista2.cardsOrder == '[]' else lista2.cardsOrder[1:-1].split(', ')
                     card = session.query(Card).filter_by(
                         id=cardsOrder[oldCardIndex])
                     card.lista = destListId
@@ -179,8 +171,7 @@ def crCards():
                 payload = request.get_json()["payload"]
                 lista = session.query(List).filter_by(
                     id=payload['listId']).one()
-                cards = [] if lista.cardsOrder == '[]' else lista.cardsOrder[1:-
-                                                                             1].split(', ')
+                cards = [] if lista.cardsOrder == '[]' else lista.cardsOrder[1:-1].split(', ')
                 cards.append(payload['cardId'])
                 lista.cardsOrder = '[' + ", ".join(cards) + ']'
                 session.add(lista)
@@ -200,7 +191,6 @@ def crCards():
 def rudCard(card_id):
     try:
         editCard = session.query(Card).filter_by(id=card_id).one()
-        print(editCard)
         if request.method == 'PUT':
             if request.is_json:
                 payload = request.get_json()["payload"]
