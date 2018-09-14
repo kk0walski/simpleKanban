@@ -30,6 +30,8 @@ def board():
         if request.method == 'GET':
             reasult = {}
             reasult["board"] = board.serialize["lists"]
+            reasult["lists"] = {}
+            reasult["cards"] = {}
             lists = session.query(List).all()
             for i in lists:
                 reasult["lists"][i.serialize["id"]] = i.serialize

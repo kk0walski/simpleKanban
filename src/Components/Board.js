@@ -5,6 +5,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import '@atlaskit/css-reset';
 import List from './List';
 import ListAdder from './ListAdder';
+import { startMoveList, startMoveCard, startGetBoard } from '../actions/dataActions';
 
 class InnerList extends React.PureComponent {
     render() {
@@ -23,8 +24,12 @@ class Board extends Component {
         dispatch: PropTypes.func.isRequired
     }
 
+    constructor(props){
+        super(props)
+        props.startGetBoard()
+    }
+
     onDragEnd = result => {
-        const { dispatch } = this.props;
         const { destination, source, type } = result;
 
         if (!destination) {
@@ -39,7 +44,7 @@ class Board extends Component {
         }
 
         if (type === 'list') {
-            dispatch({
+            this.props.startMoveList({
                 type: 'MOVE_LIST',
                 payload: {
                     oldListIndex: source.index,
@@ -48,7 +53,7 @@ class Board extends Component {
             })
             return;
         } else {
-            dispatch({
+            this.props.startMoveCard({
                 type: 'MOVE_CARD',
                 payload: {
                     oldCardIndex: source.index,
@@ -95,4 +100,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(Board);
+const mapDispatchToProps = (dispatch) => ({
+    startMoveList: (acttion) => dispatch(startMoveList(acttion)),
+    startMoveCard: (acttion) => dispatch(startMoveCard(acttion)),
+    startGetBoard: () => dispatch(startGetBoard())
+  });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

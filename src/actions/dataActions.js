@@ -71,3 +71,17 @@ export const startUpdateCard = (action = {})  => {
         })
     )
 }
+
+export const startGetBoard = (action ={}) => {
+    return (dispatch) => (
+        myApi.endpoints.board.getAll().then(res => {
+            dispatch({
+                type: 'SET_BOARD',
+                payload: {
+                    data: res.data
+                }
+            });
+            console.log(res.data)
+        })
+    )
+}
