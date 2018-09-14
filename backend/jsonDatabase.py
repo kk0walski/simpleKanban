@@ -19,9 +19,7 @@ class JSONDatabase:
             self.data['cards'].pop(cardId)
         self.data['lists'].pop(listId)
         reasult = {
-            'lista': {
-                'id': deleteList['id'], 'title': deleteList['title'], 'cards': deleteList['cards']
-                }, 'lists': self.data['board']
+            'lista': deleteList, 'lists': self.data['board']
             }
         return reasult
 
@@ -33,13 +31,14 @@ class JSONDatabase:
 
     def addList(self, payload):
         self.data['board']['lists'].append(payload['listId'])
-        self.data['lists'][payload['listId']] = {
+        newList = {
             'id': payload['listId'],
             'title': payload['title'],
             'cards': []               
         }
+        self.data['lists'][payload['listId']] = newList
         reasult = {
             'board': self.data['board'],
-            'list': self.data['lists'][payload['listId']]
+            'list': newList
         }
         return reasult
