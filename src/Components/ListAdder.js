@@ -37,13 +37,7 @@ class ListAdder extends Component {
     const { listTitle } = this.state;
     const listId = shortid.generate();
     if (listTitle === "") return;
-    this.props.startAddList({
-      type: "ADD_LIST",
-      payload: {
-        listId,
-        title: listTitle
-      }
-    })
+    this.props.startAddList(listId, listTitle)
     this.setState({ isOpen: false, listTitle: "" });
   };
 
@@ -79,7 +73,7 @@ class ListAdder extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  startAddList: (acttion) => dispatch(startAddList(acttion))
+  startAddList: (listId, listTitle) => dispatch(startAddList(listId, listTitle))
 });
 
 export default connect(undefined, mapDispatchToProps)(ListAdder)

@@ -35,15 +35,7 @@ class CardAdder extends Component {
         const { newTitle, newContent } = this.state;
         const cardId = shortid.generate()
         if (newTitle !== "" && newContent !== "") {
-            this.props.startAddCard({
-                type: "ADD_CARD",
-                payload: {
-                    listId,
-                    cardId,
-                    title: newTitle,
-                    content: newContent
-                }
-            })
+            this.props.startAddCard(listId, cardId, newTitle, newContent)
         }
         this.toggleCardComposer()
     }
@@ -83,7 +75,7 @@ class CardAdder extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    startAddCard: (acttion) => dispatch(startAddCard(acttion))
+    startAddCard: (listId, cardId, newTitle, newContent) => dispatch(startAddCard(listId, cardId, newTitle, newContent))
   });
 
 export default connect(undefined, mapDispatchToProps)(CardAdder)

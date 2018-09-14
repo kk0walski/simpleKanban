@@ -41,13 +41,7 @@ class Card extends Component {
 
     handleDelete = () => {
         const { listId, card } = this.props;
-        this.props.startDeleteCard({
-            type: "DELETE_CARD",
-            payload: {
-                listId,
-                id: card.id
-            }
-        })
+        this.props.startDeleteCard(listId, card.id)
     }
 
     submitCard = () => {
@@ -56,14 +50,7 @@ class Card extends Component {
         if (newTitle === "" && newContent === "") {
             this.handleDelete();
         } else if (newTitle !== card.title || newContent !== card.content ) {
-            this.props.startUpdateCard({
-                type: "CHANGE_CARD_DATA",
-                payload: {
-                    id: card.id,
-                    newTitle,
-                    newContent
-                }
-            });
+            this.props.startUpdateCard(card.id, newTitle, newContent)
         }
         this.toggleCardEditor();
     };
@@ -131,8 +118,8 @@ class Card extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    startDeleteCard: (action) => dispatch(startDeleteCard(action)),
-    startUpdateCard: (action) => dispatch(startUpdateCard(action))
+    startDeleteCard: (listId, cardId) => dispatch(startDeleteCard(listId, cardId)),
+    startUpdateCard: (cardId, newTitle, newContent) => dispatch(startUpdateCard(cardId, newTitle, newContent))
 })
 
 export default connect(undefined, mapDispatchToProps)(Card)

@@ -23,7 +23,7 @@ class Board extends Component {
         cards: PropTypes.object.isRequired
     }
 
-    constructor(props){
+    constructor(props) {
         super(props)
         props.startGetBoard()
     }
@@ -43,24 +43,10 @@ class Board extends Component {
         }
 
         if (type === 'list') {
-            this.props.startMoveList({
-                type: 'MOVE_LIST',
-                payload: {
-                    oldListIndex: source.index,
-                    newListIndex: destination.index
-                }
-            })
+            this.props.startMoveList(source.index, destination.index)
             return;
         } else {
-            this.props.startMoveCard({
-                type: 'MOVE_CARD',
-                payload: {
-                    oldCardIndex: source.index,
-                    newCardIndex: destination.index,
-                    sourceListId: source.droppableId,
-                    destListId: destination.droppableId
-                }
-            })
+            this.props.startMoveCard(source.index, destination.index, source.droppableId, destination.droppableId)
             return;
         }
     };
@@ -100,9 +86,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    startMoveList: (acttion) => dispatch(startMoveList(acttion)),
-    startMoveCard: (acttion) => dispatch(startMoveCard(acttion)),
+    startMoveList: (oldListIndex, newListIndex) => dispatch(startMoveList(oldListIndex, newListIndex)),
+    startMoveCard: (oldCardIndex, newCardIndex, sourceListId, destListId) => dispatch(startMoveCard(oldCardIndex, newCardIndex, sourceListId, destListId)),
     startGetBoard: () => dispatch(startGetBoard())
-  });
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);
