@@ -48,5 +48,6 @@ class Card(Base):
         return {
             'id': self.id,
             'title': self.title,
-            'content': self.content
+            'content': self.content,
+            'lista': self.lista
         }

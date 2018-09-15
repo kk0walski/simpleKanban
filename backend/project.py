@@ -113,7 +113,7 @@ def create_app(test_config=False):
                         lista1.cardsOrder = '[' + ", ".join(cardsOrder) + ']'
                         session.add(lista1)
                         session.commit()
-                        return jsonify({'reasult': 'success'}), 200
+                        return jsonify({'lista': lista1.serialize}), 200
                     else:
                         lista1 = session.query(List).filter_by(
                             id=sourceListId).one()
@@ -136,7 +136,7 @@ def create_app(test_config=False):
                         session.commit()
                         session.add(lista2)
                         session.commit()
-                        return jsonify({'reasult': 'success'}), 200
+                        return jsonify({'lista1': lista1.serialize, 'lista2': lista2.serialize}), 200
                 except NoResultFound:
                     return jsonify({'reasult': 'failuse', 'error': 404}), 404
             else:
@@ -162,7 +162,6 @@ def create_app(test_config=False):
                 newLists = [] if board.listsOrder == '[]' else board.listsOrder[1:-
                                                                                 1].split(', ')
                 newLists.remove(list_id)
-                print(newLists)
                 board.listsOrder = '[' + ", ".join(newLists) + ']'
                 session.add(board)
                 session.commit()

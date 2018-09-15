@@ -82,9 +82,6 @@ class FlaskTestCase(unittest.TestCase):
         response = self.tester.post('/api/lists', data=json.dumps(lista), content_type='application/json')
         self.assertEqual(response.status_code, 400)
 
-        
-
-
     def tearDown(self):
         os.remove('test.db')
         self.testDatabase.reset()
