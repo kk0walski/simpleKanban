@@ -51,3 +51,20 @@ class JSONDatabase:
             'list': newList
         }
         return reasult
+        
+    def addCard(self, payload):
+        editList = self.data['lists'][payload['listId']]
+        editList.push(payload['cardId'])
+        self.data['lists'][payload['listId']] = editList
+        newCard = {
+            'id': payload['cardId'],
+            'title': payload['title'],
+            'content': payload['content'],
+            'lista': payload['listId']
+        }
+        self.data['cards'][payload['cardId']] = newCard
+        reasult = {
+            'card': newCard,
+            'list': editList
+        }
+        return reasult
