@@ -51,6 +51,15 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(message, self.testDatabase.moveList(oldListIndex, newListIndex))
         self.assertEqual(response.status_code, 200)
 
+    def add_card(self, listId, cardId, cardTitle, cardContent):
+        newCard = {'listId': listId, 'cardId': cardId, 'title': cardTitle, 'content': cardContent}
+        payload = {'payload': newCard}
+        response = self.tester.post('/api/cards', data=json.dumps(payload), content_type='application/json')
+        message = response.get_json()
+        self.assertEqual(message, self.testDatabase.addCard(newCard))
+        self.assertEqual(response.status_code, 200)
+
+
     def test_hello(self):
         response = self.tester.get('/', content_type='html/text')
         self.assertEqual(response.status_code, 200)
@@ -60,6 +69,7 @@ class FlaskTestCase(unittest.TestCase):
 
     def testCRUDList(self):
         self.add_list('list-1', 'list-1')
+        self.add_card('list-1', 'card-1', 'card-1', 'content-card-1')
         self.add_list('list-2', 'list-2')
         self.getBoard()
         self.moveList(0,1)

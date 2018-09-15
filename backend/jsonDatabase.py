@@ -54,13 +54,12 @@ class JSONDatabase:
         
     def addCard(self, payload):
         editList = self.data['lists'][payload['listId']]
-        editList.push(payload['cardId'])
+        editList['cards'].append(payload['cardId'])
         self.data['lists'][payload['listId']] = editList
         newCard = {
             'id': payload['cardId'],
             'title': payload['title'],
-            'content': payload['content'],
-            'lista': payload['listId']
+            'content': payload['content']
         }
         self.data['cards'][payload['cardId']] = newCard
         reasult = {
@@ -68,3 +67,4 @@ class JSONDatabase:
             'list': editList
         }
         return reasult
+        
