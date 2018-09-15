@@ -43,6 +43,14 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(message, self.testDatabase.addList(newList))
         self.assertEqual(response.status_code, 200)
 
+    def moveList(self, oldListIndex, newListIndex):
+        moveData = {'oldListIndex':oldListIndex, 'newListIndex':newListIndex}
+        payload = {'payload': moveData}
+        response = self.tester.put('/api/board', data=json.dumps(payload), content_type='application/json')
+        message = response.get_json()
+        self.assertEqual(message, self.testDatabase.moveList(oldListIndex, newListIndex))
+        self.assertEqual(response.status_code, 200)
+
     def test_hello(self):
         response = self.tester.get('/', content_type='html/text')
         self.assertEqual(response.status_code, 200)
@@ -54,6 +62,7 @@ class FlaskTestCase(unittest.TestCase):
         self.add_list('list-1', 'list-1')
         self.add_list('list-2', 'list-2')
         self.getBoard()
+        self.moveList(0,1)
         self.update_list('list-2', 'testing')
         self.delete_list('list-1')
         self.getBoard()

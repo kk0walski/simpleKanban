@@ -29,6 +29,15 @@ class JSONDatabase:
         self.data['lists'][listId] = editList
         return editList
 
+    def moveInPlace(self, lista, oldIndex, newIndex):
+        lista[oldIndex], lista[newIndex] = lista[newIndex], lista[oldIndex]
+
+    def moveList(self, oldListIndex, newListIndex):
+        boardLists = self.data['board']['lists']
+        self.moveInPlace(boardLists, oldListIndex, newListIndex)
+        self.data['board']['lists'] = boardLists
+        return self.data['board']    
+
     def addList(self, payload):
         self.data['board']['lists'].append(payload['listId'])
         newList = {
