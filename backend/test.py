@@ -59,6 +59,14 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(message, self.testDatabase.addCard(newCard))
         self.assertEqual(response.status_code, 200)
 
+    def move_card(self, oldCardIndex, newCardIndex, sourceListId, destListId):
+        moveData = {'oldCardIndex': oldCardIndex, 'newCardIndex': newCardIndex,
+                    'sourceListId': sourceListId,  'destListId': destListId }
+        payload = {'payload': moveData}
+        response = self.tester.put('/api/lists', data=json.dumps(payload), content_type='application/json')
+        message = response.get_json()
+        self.assertEqual(message, self.testDatabase.moveCard(moveData))
+        self.assertEqual(response.status_code, 200)
 
     def test_hello(self):
         response = self.tester.get('/', content_type='html/text')
@@ -67,15 +75,45 @@ class FlaskTestCase(unittest.TestCase):
     def test_empty_board(self):
         self.getBoard()
 
-    def testCRUDList(self):
+    def testAddList(self):
+        self.add_list('list-1', 'list-1')
+        self.add_list('list-2', 'list-2')
+        self.getBoard()
+
+    def testAddCard(self):
         self.add_list('list-1', 'list-1')
         self.add_card('list-1', 'card-1', 'card-1', 'content-card-1')
         self.add_list('list-2', 'list-2')
         self.getBoard()
+
+    def testMoveList(self):
+        self.add_list('list-1', 'list-1')
+        self.add_list('list-2', 'list-2')
         self.moveList(0,1)
-        self.update_list('list-2', 'testing')
+        self.getBoard()
+
+    def testMoveCard(self):
+        self.add_list('list-1', 'list-1')
+        self.add_card('list-1', 'card-1', 'card-1', 'content-card-1')
+        self.add_list('list-2', 'list-2')
+        self.move_card(0, 0,'list-1', 'list-2')
+        self.getBoard()
+
+    def testDeleteList(self):
+        self.add_list('list-1', 'list-1')
+        self.add_card('list-1', 'card-1', 'card-1', 'content-card-1')
+        self.add_list('list-2', 'list-2')
+        self.add_card('list-1', 'card-2', 'card-2', 'content-card-2')
+        self.add_card('list-1', 'card-3', 'card-3', 'content-card-3')
+        self.add_card('list-1', 'card-4', 'card-4', 'content-card-4')
         self.delete_list('list-1')
         self.getBoard()
+
+    def testUpdateList(self):
+        self.add_list('list-1', 'list-1')
+        self.update_list('list-1', 'testing')
+        self.getBoard()
+
 
     def test_wrong_add(self):
         lista = {'payload': {'listId': 'list-1'}}
