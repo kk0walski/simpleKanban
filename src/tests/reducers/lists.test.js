@@ -22,3 +22,26 @@ test('should add list', () => {
     const state = listsReducer(currentState, action)
     expect(state['list-1']).toEqual(list)
 })
+
+test('should change list name', () => {
+    const currentState = {
+        'list-1': {
+            id: 'list-1',
+            title: 'list-1',
+            cards: []
+        }
+    }
+    const newState = {'list-1': {
+        ...currentState['list-1'],
+        cards: ['card-1']
+    }}
+    const action = {
+        type: 'ADD_CARD',
+        payload: {
+            listId: 'list-1',
+            cardId: 'card-1'
+        }
+    }
+    const state = listsReducer(currentState, action)
+    expect(state, newState)
+})
