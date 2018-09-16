@@ -68,6 +68,20 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(message, self.testDatabase.moveCard(moveData))
         self.assertEqual(response.status_code, 200)
 
+    def updateCard(self, cardId, newTitle, newContent):
+        newCardData = {'id': cardId, 'newTitle': newTitle, 'newContent': newContent}
+        payload = {'payload': newCardData}
+        response = self.tester.put('/api/cards/{}'.format(cardId), data=json.dumps(payload), content_type='application/json')
+        message = response.get_json()
+        self.assertEqual(message, self.testDatabase.updateCard(cardId, newTitle, newContent))
+        self.assertEqual(response.status_code, 200)
+
+    def deleteCard(self, cardId):
+        response = self.tester.delete('/api/cards/{}'.format(cardId), content_type='json/text')
+        message = response.get_json()
+        self.assertEqual(message, self.testDatabase.deleteCard(cardId))
+        self.assertEqual(response.status_code, 200)
+
     def test_hello(self):
         response = self.tester.get('/', content_type='html/text')
         self.assertEqual(response.status_code, 200)
@@ -78,6 +92,20 @@ class FlaskTestCase(unittest.TestCase):
     def testAddList(self):
         self.add_list('list-1', 'list-1')
         self.add_list('list-2', 'list-2')
+        self.getBoard()
+
+    def testUpdateCard(self):
+        self.add_list('list-1', 'list-1')
+        self.add_card('list-1', 'card-1', 'card-1', 'content-card-1')
+        self.add_list('list-2', 'list-2')
+        self.updateCard('card-1', 'new-card-1', 'new-card-1')
+        self.getBoard()
+
+    def testRemoveCard(self):
+        self.add_list('list-1', 'list-1')
+        self.add_card('list-1', 'card-1', 'card-1', 'content-card-1')
+        self.add_list('list-2', 'list-2')
+        self.deleteCard('card-1')
         self.getBoard()
 
     def testAddCard(self):
