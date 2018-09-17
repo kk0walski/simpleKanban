@@ -49,8 +49,8 @@ class ListHeader extends Component {
       };
     
       deleteList = () => {
-        const { listId } = this.props;
-        this.props.startDeleteList(listId);
+        const { listId, cards } = this.props;
+        this.props.startDeleteList(listId, cards);
       };
     
       openTitleEditor = () => {
@@ -114,7 +114,7 @@ class ListHeader extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   startUpdateList: (listId, listTitle) => dispatch(startUpdateList(listId, listTitle)),
-  startDeleteList: (listId) => dispatch(startDeleteList(listId))
+  startDeleteList: (listId, cards) => dispatch(startDeleteList(listId, cards))
 });
 
 export default connect(undefined, mapDispatchToProps)(ListHeader);

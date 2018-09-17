@@ -36,15 +36,16 @@ export const startAddList = (listId, listTitle) => {
     )
 }
 
-export const deleteList = (listId) => ({
+export const deleteList = (listId, cardIds) => ({
     type: 'DELETE_LIST',
     payload: {
-        id: listId
+        id: listId,
+        cards: cardIds
     }
 })
 
-export const startDeleteList = (listId) => {
-    const action = deleteList(listId)
+export const startDeleteList = (listId, cardIds) => {
+    const action = deleteList(listId, cardIds)
     return (dispatch) => (
         myApi.endpoints.lists.delete(action).then(res => {
             dispatch(action)

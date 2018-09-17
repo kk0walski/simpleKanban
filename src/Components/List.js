@@ -15,9 +15,15 @@ class InnerList extends Component {
     }
 
     render() {
-        return this.props.cards.map((card, index) => (
-            <Card key={card.id} card={card} listId={this.props.listId} index={index} />
-        ));
+        return (
+            <div className="cards">
+            {
+                this.props.cards.map((card, index) => (
+                    <Card key={card.id} card={card} listId={this.props.listId} index={index} />
+                ))
+            }
+            </div>
+        )
     }
 }
 
@@ -27,7 +33,7 @@ class List extends Component {
         return (
             <Draggable draggableId={this.props.list.id} index={this.props.index} disableInteractiveElementBlocking>
                 {(provided) => (
-                    <div>
+                    <div className="list-wrapper">
                         <div
                             className="ListContainer"
                             {...provided.draggableProps}
@@ -37,26 +43,30 @@ class List extends Component {
                                 dragHandleProps={provided.dragHandleProps}
                                 listTitle={this.props.list.title}
                                 listId={this.props.list.id}
+                                cards={this.props.cards}
                             />
-                            <Droppable droppableId={this.props.list.id} type="card">
-                                {(provided, snapchot) => (
-                                    <div>
+                            <div className="cards-wrapper"> 
+                                <Droppable droppableId={this.props.list.id} type="card">
+                                    {(provided, snapchot) => (
                                         <div>
-                                            <div
-                                                className="cardList"
-                                                ref={provided.innerRef}
-                                                {...provided.droppableProps}
-                                                style={{
-                                                    backgroundColor: (snapchot.isDraggingOver ? 'skyblue' : 'inherit')
-                                                }}
-                                            >
-                                                <InnerList cards={this.props.cards} listId={this.props.list.id}/>
-                                                {provided.placeholder}
+                                            <div>
+                                                <div
+                                                    className="cardList"
+                                                    ref={provided.innerRef}
+                                                    {...provided.droppableProps}
+                                                    isDraggingOver={snapchot.isDraggingOver}
+                                                    style={{
+                                                        backgroundColor: (snapchot.isDraggingOver ? 'skyblue' : 'inherit')
+                                                    }}
+                                                >
+                                                    <InnerList cards={this.props.cards} listId={this.props.list.id}/>
+                                                    {provided.placeholder}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                )}
-                            </Droppable>
+                                    )}
+                                </Droppable>
+                            </div>
                             <CardAdder listId={this.props.list.id} cards={this.props.cards} />
                         </div>
                     </div>

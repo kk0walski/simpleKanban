@@ -1,16 +1,27 @@
 @import "../base/settings";
 
 
+.list-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    height: 85vh;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
 .ListContainer {
     background-color: $listBg;
     display: inline-flex;
     flex-direction: column;
-    margin: $grid;
-    border: $grid;
-    padding-bottom: 0;
-    transition: background-color 0.1s ease, opacity 0.1s ease;
-    user-select: none;
+    box-sizing: border-box;
     width: $list-width;
+    min-height: 0px; // fix flexbox browser incostiency
+    max-height: 100%;
+    margin: 0 5px 0 5px;
+    border-radius: $list-radius;
+    font-size: 14px;
+    transition: box-shadow 0.15s, background 0.3s;
 }
 
 .listTitle {
@@ -24,6 +35,25 @@
     min-height: 0;
 }
 
-listTitle {
-    padding: 8px;
+.cards-wrapper {
+    height: 100%;
+    margin: 0 3px 6px 3px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.cards-wrapper::-webkit-scrollbar {
+    width: 8px;
+    border-radius: 2px;
+    background-color: $transparent-black;
+}
+
+.cards-wrapper::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: $transparent-black;
+}
+
+.cards {
+    min-height: 1px;
+    margin-bottom: 3px;
 }
