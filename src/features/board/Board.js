@@ -17,7 +17,7 @@ class InnerList extends React.PureComponent {
     }
 }
 
-export default class App extends Component {
+export class Board extends Component {
     state = initialData;
 
     onDragEnd = result => {

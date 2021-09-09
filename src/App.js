@@ -1,14 +1,15 @@
 import React from 'react';
 import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
+import { Board } from './features/board/Board';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
+        {/* <img src={logo} className="App-logo" alt="logo" /> */}
+        <Board />
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
