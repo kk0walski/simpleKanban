@@ -22,10 +22,7 @@ export function Board() {
     const board = useSelector(selectBoard);
     const dispatch = useDispatch();
     return (
-        <DragDropContext onDragEnd={(result) => {
-            console.log(result)
-            dispatch(move(result))
-        }}>
+        <DragDropContext onDragEnd={(result) => dispatch(move(result))}>
             <Droppable droppableId="all-columns" direction="horizontal" type="column">
                 {(provided) => (
                     <div>
