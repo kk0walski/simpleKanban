@@ -1,7 +1,7 @@
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { useSelector, useDispatch } from 'react-redux';
-import { move, selectBoard } from './boardSlice';
+import { connect } from "react-redux";
+import { move } from './boardSlice';
 import Column from './Column';
 import styled from 'styled-components';
 
@@ -18,27 +18,35 @@ class InnerList extends React.PureComponent {
     }
 }
 
-export function Board() {
-    const board = useSelector(selectBoard);
-    const dispatch = useDispatch();
-    return (
-        <DragDropContext onDragEnd={(result) => dispatch(move(result))}>
-            <Droppable droppableId="all-columns" direction="horizontal" type="column">
-                {(provided) => (
-                    <div>
-                        <Container
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                        >
-                            {board.columnOrder.map((columnId, index) => {
-                                const column = board.columns[columnId];
-                                return <InnerList key={column.id} column={column} taskMap={board.tasks} index={index} />;
-                            })}
-                        </Container>
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
-        </DragDropContext>
-    )
+class Board extends React.Component {
+    render(){
+        return (
+            <DragDropContext onDragEnd={(result) => this.props.move(result)}>
+                <Droppable droppableId="all-columns" direction="horizontal" type="column">
+                    {(provided) => (
+                        <div>
+                            <Container
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                            >
+                                {this.props.board.columnOrder.map((columnId, index) => {
+                                    const column = this.props.board.columns[columnId];
+                                    return <InnerList key={column.id} column={column} taskMap={this.props.board.tasks} index={index} />;
+                                })}
+                            </Container>
+                            {provided.placeholder}
+                        </div>
+                    )}
+                </Droppable>
+            </DragDropContext>
+        )
+    }
 }
+
+const mapStateToProps = (state) => ({
+    board: state.board
+})
+
+const mapDispatchToProps = { move };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);
