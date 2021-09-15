@@ -26,7 +26,8 @@ export const boardSlice = createSlice({
                 taskIds: []
             }
         },
-        columnOrder: ['column-1', 'column-2', 'column-3']
+        columnOrder: ['column-1', 'column-2', 'column-3'],
+        color: 'blue'
     },
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
