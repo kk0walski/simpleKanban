@@ -17,6 +17,14 @@ class InnerList extends React.PureComponent {
 
 class Board extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+          startX: null,
+          startScrollX: null
+        };
+    }
+
     handleMouseDown = ({ target, clientX }) => {
         if (target.className !== "list-wrapper" && target.className !== "lists") {
             return;
