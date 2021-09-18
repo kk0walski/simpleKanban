@@ -101,7 +101,7 @@ You can edit the title of the board by clicking it. You can also change the colo
             [Object.keys(list2)[0]]: list2[Object.keys(list2)[0]],
             [Object.keys(list3)[0]]: list3[Object.keys(list3)[0]]
         },
-        tasks: {
+        cards: {
             ...list1_cards,
             ...list2_cards,
             ...list3_cards

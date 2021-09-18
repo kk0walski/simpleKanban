@@ -10,20 +10,20 @@ export default class Cards extends Component {
 
 
     shouldComponentUpdate(nextProps) {
-        if (nextProps === this.props.tasks) {
+        if (nextProps === this.props.cards) {
             return false;
         }
         return true;
     }
 
     render() {
-        const { id, tasks } = this.props;
+        const { id, cards } = this.props;
         return (
             <Droppable droppableId={id}>
                 {(provided, { isDraggingOver }) => (
                     <>
                         <div className="cards" ref={provided.innerRef}>
-                            {tasks.map((card, index) => (
+                            {cards.map((card, index) => (
                                 <Card
                                     isDraggingOver={isDraggingOver}
                                     key={card.id}

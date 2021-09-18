@@ -10,8 +10,8 @@ import "./Board.scss";
 class InnerList extends React.PureComponent {
     render() {
         const { column, taskMap, index } = this.props;
-        const tasks = column.taskIds.map(taskId => taskMap[taskId]);
-        return <Column column={column} tasks={tasks} index={index} />
+        const cards = column.taskIds.map(taskId => taskMap[taskId]);
+        return <Column column={column} cards={cards} index={index} />
     }
 }
 
@@ -91,7 +91,7 @@ class Board extends React.Component {
                                 <div className="lists" ref={provided.innerRef}>
                                     {this.props.board.columnOrder.map((columnId, index) => {
                                         const column = this.props.board.columns[columnId];
-                                        return <InnerList key={column.id} column={column} taskMap={this.props.board.tasks} index={index} />;
+                                        return <InnerList key={column.id} column={column} taskMap={this.props.board.cards} index={index} />;
                                     })}
                                     {provided.placeholder}
                                 </div>

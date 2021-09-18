@@ -26,10 +26,10 @@ export default class Column extends Component {
                                     dragHandleProps={provided.dragHandleProps}
                                     listTitle={this.props.column.title}
                                     listId={this.props.column.id}
-                                    cards={this.props.tasks}
+                                    cards={this.props.cards}
                                 />
                                 <div className="cards-wrapper">
-                                    <Cards id={this.props.column.id} tasks={this.props.tasks} />
+                                    <Cards id={this.props.column.id} cards={this.props.cards} />
                                 </div>
                             </div>
                         </div>
