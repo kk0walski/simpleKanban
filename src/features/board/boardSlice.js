@@ -70,12 +70,16 @@ export const boardSlice = createSlice({
         changeTitle: (state, action) => {
             const { newTitle } = action.payload;
             state.title = newTitle
+        },
+        changeColor: (state, action) => {
+            const { color } = action.payload;
+            state.color = color;
         }
     },
 
 });
 
-export const { move, editCard, addCard, addList, changeTitle } = boardSlice.actions;
+export const { move, editCard, addCard, addList, changeTitle, changeColor } = boardSlice.actions;
 
 export const selectBoard = (state) => state.board;
 

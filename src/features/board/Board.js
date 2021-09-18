@@ -86,7 +86,7 @@ class Board extends React.Component {
             <HeadProvider>
                 <div className={classnames("board", color)}>
                     <Title>{title} | React Kanban</Title>
-                    <BoardHeader boardTitle={title} />
+                    <BoardHeader boardTitle={title} boardColor={color} />
                     <div
                         className="lists-wrapper"
                         onMouseDown={this.handleMouseDown}
