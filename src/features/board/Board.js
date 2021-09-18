@@ -1,7 +1,8 @@
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { connect } from "react-redux";
-import { Title } from "react-head";
+import { Title, HeadProvider } from "react-head";
+import BoardHeader from './BoardHeader';
 import { move } from './boardSlice';
 import classnames from "classnames";
 import ListAdder from "./ListAdder";
@@ -22,8 +23,8 @@ class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          startX: null,
-          startScrollX: null
+            startX: null,
+            startScrollX: null
         };
     }
 
@@ -82,30 +83,33 @@ class Board extends React.Component {
     render() {
         const { columnOrder, columns, color, cards, name } = this.props.board;
         return (
-            <div className={classnames("board", color)}>
-                <Title>{name} | React Kanban</Title>
-                <div
-                    className="lists-wrapper"
-                    onMouseDown={this.handleMouseDown}
-                    onWheel={this.handleWheel}
-                >
-                    <DragDropContext onDragEnd={(result) => this.props.move(result)}>
-                        <Droppable droppableId="all-columns" direction="horizontal" type="column">
-                            {provided => (
-                                <div className="lists" ref={provided.innerRef}>
-                                    {columnOrder.map((columnId, index) => {
-                                        const column = columns[columnId];
-                                        return <InnerList key={column.id} column={column} taskMap={cards} index={index} />;
-                                    })}
-                                    {provided.placeholder}
-                                    <ListAdder />
-                                </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
+            <HeadProvider>
+                <div className={classnames("board", color)}>
+                    <Title>{name} | React Kanban</Title>
+                    <BoardHeader boardTitle={name} />
+                    <div
+                        className="lists-wrapper"
+                        onMouseDown={this.handleMouseDown}
+                        onWheel={this.handleWheel}
+                    >
+                        <DragDropContext onDragEnd={(result) => this.props.move(result)}>
+                            <Droppable droppableId="all-columns" direction="horizontal" type="column">
+                                {provided => (
+                                    <div className="lists" ref={provided.innerRef}>
+                                        {columnOrder.map((columnId, index) => {
+                                            const column = columns[columnId];
+                                            return <InnerList key={column.id} column={column} taskMap={cards} index={index} />;
+                                        })}
+                                        {provided.placeholder}
+                                        <ListAdder />
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
+                    </div>
+                    <div className="board-underlay" />
                 </div>
-                <div className="board-underlay" />
-            </div>
+            </HeadProvider>
         )
     }
 }

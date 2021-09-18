@@ -7,13 +7,15 @@ import { Provider } from 'react-redux';
 import { HeadProvider } from 'react-head';
 import * as serviceWorker from './serviceWorker';
 
+const headTags = [];
+
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <HeadProvider>
+    <HeadProvider headTags={headTags}>
+      <Provider store={store}>
         <App />
-      </HeadProvider>
-    </Provider>
+      </Provider>
+    </HeadProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
