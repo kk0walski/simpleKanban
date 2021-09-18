@@ -81,12 +81,12 @@ class Board extends React.Component {
     };
 
     render() {
-        const { columnOrder, columns, color, cards, name } = this.props.board;
+        const { columnOrder, columns, color, cards, title } = this.props.board;
         return (
             <HeadProvider>
                 <div className={classnames("board", color)}>
-                    <Title>{name} | React Kanban</Title>
-                    <BoardHeader boardTitle={name} />
+                    <Title>{title} | React Kanban</Title>
+                    <BoardHeader boardTitle={title} />
                     <div
                         className="lists-wrapper"
                         onMouseDown={this.handleMouseDown}

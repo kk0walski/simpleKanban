@@ -93,7 +93,7 @@ You can edit the title of the board by clicking it. You can also change the colo
     list3[Object.keys(list3)[0]].taskIds = Object.keys(list3_cards)
     return {
         _id: nanoid(),
-        name: "Tutorial board",
+        title: "Tutorial board",
         color: "blue",
         columnOrder: [Object.keys(list1)[0], Object.keys(list2)[0], Object.keys(list3)[0]],
         columns: {
