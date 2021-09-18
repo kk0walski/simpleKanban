@@ -78,6 +78,7 @@ class Board extends React.Component {
     };
 
     render() {
+        console.log(this.props.board)
         return (
             <div className={classnames("board", this.props.board.color)}>
                 <div
