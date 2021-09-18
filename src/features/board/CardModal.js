@@ -134,11 +134,7 @@ class CardModal extends Component {
         );
     }
 }
-
-const mapStateToProps = (state) => ({
-    board: state.board
-  })
   
   const mapDispatchToProps = { editCard }
   
-  export default connect(mapStateToProps, mapDispatchToProps)(CardModal);
+  export default connect(undefined, mapDispatchToProps)(CardModal);

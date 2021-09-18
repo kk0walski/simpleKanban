@@ -1,4 +1,4 @@
-import { nanoid } from 'nanoid'
+import { nanoid } from 'nanoid';
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { addCard } from './boardSlice';
@@ -74,10 +74,6 @@ class CardAdder extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    board: state.board
-})
-
 const mapDispatchToProps = { addCard };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CardAdder);
+export default connect(undefined, mapDispatchToProps)(CardAdder);

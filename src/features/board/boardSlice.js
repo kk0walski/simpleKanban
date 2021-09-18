@@ -61,12 +61,17 @@ export const boardSlice = createSlice({
             const { cardText, cardId, listId } = action.payload
             state.cards[cardId] = {id: cardId, content: cardText }
             state.columns[listId].taskIds.push(cardId)
+        },
+        addList: (state, action) => {
+            const { listTitle, listId } = action.payload;
+            state.columnOrder.push(listId);
+            state.columns[listId] = { id: listId, title: listTitle, taskIds: [] };
         }
     },
 
 });
 
-export const { move, editCard, addCard } = boardSlice.actions;
+export const { move, editCard, addCard, addList } = boardSlice.actions;
 
 export const selectBoard = (state) => state.board;
 

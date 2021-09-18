@@ -115,10 +115,6 @@ class Card extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  board: state.board
-})
-
 const mapDispatchToProps = { editCard }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Card);
+export default connect(undefined, mapDispatchToProps)(Card);

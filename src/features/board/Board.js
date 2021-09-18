@@ -3,6 +3,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { connect } from "react-redux";
 import { move } from './boardSlice';
 import classnames from "classnames";
+import ListAdder from "./ListAdder";
 import Column from './Column';
 import "./Board.scss";
 
@@ -78,8 +79,9 @@ class Board extends React.Component {
     };
 
     render() {
+        const { columnOrder, columns, color, cards } = this.props.board;
         return (
-            <div className={classnames("board", this.props.board.color)}>
+            <div className={classnames("board", color)}>
                 <div
                     className="lists-wrapper"
                     onMouseDown={this.handleMouseDown}
@@ -89,11 +91,12 @@ class Board extends React.Component {
                         <Droppable droppableId="all-columns" direction="horizontal" type="column">
                             {provided => (
                                 <div className="lists" ref={provided.innerRef}>
-                                    {this.props.board.columnOrder.map((columnId, index) => {
-                                        const column = this.props.board.columns[columnId];
-                                        return <InnerList key={column.id} column={column} taskMap={this.props.board.cards} index={index} />;
+                                    {columnOrder.map((columnId, index) => {
+                                        const column = columns[columnId];
+                                        return <InnerList key={column.id} column={column} taskMap={cards} index={index} />;
                                     })}
                                     {provided.placeholder}
+                                    <ListAdder />
                                 </div>
                             )}
                         </Droppable>
