@@ -1,12 +1,26 @@
 import React, { Component } from 'react'
 import { Draggable } from 'react-beautiful-dnd';
+import { connect } from "react-redux";
+import { editCard } from './boardSlice';
 import classnames from "classnames";
 import formatMarkdown from "./formatMarkdown";
 import CardBadges from "./CardBadges";
 import { findCheckboxes } from "./utils";
+import CardModal from './CardModal';
 import "./Card.scss";
 
-export default class Task extends Component {
+class Card extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      isModalOpen: false
+    };
+  }
+
+  toggleCardEditor = () => {
+    this.setState({ isModalOpen: !this.state.isModalOpen });
+  };
 
   handleClick = event => {
     const { tagName, checked, id } = event.target;
@@ -41,49 +55,70 @@ export default class Task extends Component {
       j += 1;
       return newString;
     });
+
+    this.props.editCard({ cardId: card.id, cardText: newText })
   };
+
   render() {
-    const { card, index } = this.props;
+    const { card, index, listId, isDraggingOver } = this.props;
+    const { isModalOpen } = this.state;
     const checkboxes = findCheckboxes(card.content);
     return (
-      <Draggable draggableId={card.id} index={index}>
-        {(provided, snapshot) => (
-          <>
-            {/* eslint-disable */}
-            <div
-              className={classnames("card-title", {
-                "card-title--drag": snapshot.isDragging
-              })}
-              ref={ref => {
-                provided.innerRef(ref);
-                this.ref = ref;
-              }}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              onClick={event => {
-                this.handleClick(event);
-              }}
-              onKeyDown={event => {
-                this.handleKeyDown(event);
-              }}
-              style={{
-                ...provided.draggableProps.style,
-              }}
-            >
+      <>
+        <Draggable draggableId={card.id} index={index}>
+          {(provided, snapshot) => (
+            <>
+              {/* eslint-disable */}
               <div
-                className="card-title-html"
-                dangerouslySetInnerHTML={{
-                  __html: formatMarkdown(card.content)
+                className={classnames("card-title", {
+                  "card-title--drag": snapshot.isDragging
+                })}
+                ref={ref => {
+                  provided.innerRef(ref);
+                  this.ref = ref;
                 }}
-              />
-              {/* eslint-enable */}
-              {(checkboxes.total > 0) && <CardBadges checkboxes={checkboxes} />}
-            </div>
-            {/* Remove placeholder when not dragging over to reduce snapping */}
-            {this.props.isDraggingOver && provided.placeholder}
-          </>
-        )}
-      </Draggable>
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                onClick={event => {
+                  this.handleClick(event);
+                }}
+                onKeyDown={event => {
+                  this.handleKeyDown(event);
+                }}
+                style={{
+                  ...provided.draggableProps.style,
+                }}
+              >
+                <div
+                  className="card-title-html"
+                  dangerouslySetInnerHTML={{
+                    __html: formatMarkdown(card.content)
+                  }}
+                />
+                {/* eslint-enable */}
+                {(checkboxes.total > 0) && <CardBadges checkboxes={checkboxes} />}
+              </div>
+              {/* Remove placeholder when not dragging over to reduce snapping */}
+              {isDraggingOver && provided.placeholder}
+            </>
+          )}
+        </Draggable>
+        <CardModal
+          isOpen={isModalOpen}
+          cardElement={this.ref}
+          card={card}
+          listId={listId}
+          toggleCardEditor={this.toggleCardEditor}
+        />
+      </>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  board: state.board
+})
+
+const mapDispatchToProps = { editCard }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Card);

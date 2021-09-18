@@ -52,11 +52,16 @@ export const boardSlice = createSlice({
                 }
             }
         },
+        editCard: (state, action) => {
+            const { cardText, cardId } = action.payload
+            state.cards[cardId].content = cardText
+
+        }
     },
 
 });
 
-export const { move } = boardSlice.actions;
+export const { move, editCard } = boardSlice.actions;
 
 export const selectBoard = (state) => state.board;
 
