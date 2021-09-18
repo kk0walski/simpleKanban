@@ -1,6 +1,7 @@
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { connect } from "react-redux";
+import { Title } from "react-head";
 import { move } from './boardSlice';
 import classnames from "classnames";
 import ListAdder from "./ListAdder";
@@ -79,9 +80,10 @@ class Board extends React.Component {
     };
 
     render() {
-        const { columnOrder, columns, color, cards } = this.props.board;
+        const { columnOrder, columns, color, cards, name } = this.props.board;
         return (
             <div className={classnames("board", color)}>
+                <Title>{name} | React Kanban</Title>
                 <div
                     className="lists-wrapper"
                     onMouseDown={this.handleMouseDown}
