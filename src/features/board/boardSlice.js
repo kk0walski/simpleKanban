@@ -74,12 +74,26 @@ export const boardSlice = createSlice({
         changeColor: (state, action) => {
             const { color } = action.payload;
             state.color = color;
+        },
+        changeListTitle: (state, action) => {
+            const {listTitle, listId} = action.payload;
+            state.columns[listId].title = listTitle;
+        },
+        removeList: (state, action) => {
+            const { cardIds, listId } = action.payload;
+            const { [listId]: deleteList, ...restOfLists } = state.columns
+            state.columns = restOfLists
+            cardIds.forEach(id => {
+                delete state.cards[id]
+            })
+            delete state.columns[listId]
+            state.columnOrder = state.columnOrder.filter(item => item !== listId)
         }
     },
 
 });
 
-export const { move, editCard, addCard, addList, changeTitle, changeColor } = boardSlice.actions;
+export const { move, editCard, addCard, addList, changeTitle, changeColor, changeListTitle, removeList } = boardSlice.actions;
 
 export const selectBoard = (state) => state.board;
 
