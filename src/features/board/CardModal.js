@@ -14,7 +14,6 @@ class CardModal extends Component {
         super(props);
         this.state = {
             newText: props.card.content,
-            isColorPickerOpen: false,
             isTextareaFocused: true
         };
         if (typeof document !== "undefined") {
@@ -42,12 +41,6 @@ class CardModal extends Component {
 
     handleChange = event => {
         this.setState({ newText: event.target.value });
-    };
-
-    toggleColorPicker = () => {
-        console.log("DZIALA")
-        this.setState({ isColorPickerOpen: !this.state.isColorPickerOpen });
-        console.log(this.state.isColorPickerOpen)
     };
 
     handleRequestClose = () => {
@@ -144,7 +137,6 @@ class CardModal extends Component {
                     boundingRect={boundingRect}
                     isCardNearRightBorder={isCardNearRightBorder}
                     isThinDisplay={isThinDisplay}
-                    toggleColorPicker={this.toggleColorPicker}
                 />
             </Modal>
         );
