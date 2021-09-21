@@ -91,7 +91,7 @@ You can edit the title of the board by clicking it. You can also change the colo
         }
     ])
     list3[Object.keys(list3)[0]].taskIds = Object.keys(list3_cards)
-    return {
+    const board = {
         _id: nanoid(),
         title: "Tutorial board",
         color: "blue",
@@ -107,6 +107,7 @@ You can edit the title of the board by clicking it. You can also change the colo
             ...list3_cards
         }
     };
+    return board
 };
 
 export default createWelcomeBoard;

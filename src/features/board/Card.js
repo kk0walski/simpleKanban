@@ -87,6 +87,7 @@ class Card extends Component {
                 }}
                 style={{
                   ...provided.draggableProps.style,
+                  background: card.color
                 }}
               >
                 <div

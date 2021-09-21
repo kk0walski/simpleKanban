@@ -10,13 +10,11 @@ import * as serviceWorker from './serviceWorker';
 const headTags = [];
 
 ReactDOM.render(
-  <React.StrictMode>
-    <HeadProvider headTags={headTags}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </HeadProvider>
-  </React.StrictMode>,
+  <HeadProvider headTags={headTags}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </HeadProvider>,
   document.getElementById('root')
 );
 

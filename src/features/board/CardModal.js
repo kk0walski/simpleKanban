@@ -5,6 +5,7 @@ import CardBadges from './CardBadges';
 import { connect } from "react-redux";
 import { editCard } from './boardSlice';
 import { findCheckboxes } from './utils';
+import CardOptions from "./CardOptions";
 import "./CardModal.scss";
 
 class CardModal extends Component {
@@ -43,6 +44,12 @@ class CardModal extends Component {
         this.setState({ newText: event.target.value });
     };
 
+    toggleColorPicker = () => {
+        console.log("DZIALA")
+        this.setState({ isColorPickerOpen: !this.state.isColorPickerOpen });
+        console.log(this.state.isColorPickerOpen)
+    };
+
     handleRequestClose = () => {
         const { isColorPickerOpen } = this.state;
         const { toggleCardEditor } = this.props;
@@ -52,8 +59,8 @@ class CardModal extends Component {
     };
 
     render() {
-        const { newText, isTextareaFocused } = this.state;
-        const { cardElement, card, isOpen } = this.props;
+        const { newText, isColorPickerOpen, isTextareaFocused } = this.state;
+        const { cardElement, card, listId, isOpen } = this.props;
         if (!cardElement) {
             return null;
         }
@@ -117,7 +124,7 @@ class CardModal extends Component {
                 >
                     <Textarea
                         autoFocus
-                        usecachefordommeasurements
+                        cacheMeasurements
                         value={newText}
                         onChange={this.handleChange}
                         onKeyDown={this.handleKeyDown}
@@ -130,11 +137,20 @@ class CardModal extends Component {
                         <CardBadges date={card.date} checkboxes={checkboxes} />
                     )}
                 </div>
+                <CardOptions
+                    isColorPickerOpen={isColorPickerOpen}
+                    card={card}
+                    listId={listId}
+                    boundingRect={boundingRect}
+                    isCardNearRightBorder={isCardNearRightBorder}
+                    isThinDisplay={isThinDisplay}
+                    toggleColorPicker={this.toggleColorPicker}
+                />
             </Modal>
         );
     }
 }
-  
-  const mapDispatchToProps = { editCard }
-  
-  export default connect(undefined, mapDispatchToProps)(CardModal);
+
+const mapDispatchToProps = { editCard }
+
+export default connect(undefined, mapDispatchToProps)(CardModal);

@@ -59,7 +59,7 @@ export const boardSlice = createSlice({
         },
         addCard: (state, action) => {
             const { cardText, cardId, listId } = action.payload
-            state.cards[cardId] = {id: cardId, content: cardText }
+            state.cards[cardId] = { id: cardId, content: cardText }
             state.columns[listId].taskIds.push(cardId)
         },
         addList: (state, action) => {
@@ -76,7 +76,7 @@ export const boardSlice = createSlice({
             state.color = color;
         },
         changeListTitle: (state, action) => {
-            const {listTitle, listId} = action.payload;
+            const { listTitle, listId } = action.payload;
             state.columns[listId].title = listTitle;
         },
         removeList: (state, action) => {
@@ -88,12 +88,22 @@ export const boardSlice = createSlice({
             })
             delete state.columns[listId]
             state.columnOrder = state.columnOrder.filter(item => item !== listId)
+        },
+        removeCard: (state, action) => {
+            const { cardId, listId } = action.payload;
+            state.columns[listId].taskIds = state.columns[listId].taskIds.filter(item => item !== cardId);
+            const { [cardId]: deleteCard, ...restOfCards } = state.cards;
+            state.cards = restOfCards;
+        },
+        changeCardColor: (state, action) => {
+            const {cardId, color } = action.payload;
+            state.cards[cardId].color = color
         }
     },
 
 });
 
-export const { move, editCard, addCard, addList, changeTitle, changeColor, changeListTitle, removeList } = boardSlice.actions;
+export const { move, editCard, addCard, addList, changeTitle, changeColor, changeListTitle, removeList, removeCard, changeCardColor } = boardSlice.actions;
 
 export const selectBoard = (state) => state.board;
 
