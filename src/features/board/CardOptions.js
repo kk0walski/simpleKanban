@@ -10,12 +10,15 @@ class CardOptions extends React.Component {
 
     constructor() {
         super();
-        this.state = { isCalendarOpen: false, isColorPickerOpen: false };
+        this.state = { isCalendarOpen: false, isColorPickerOpen: false, buttonClicked: false };
     }
 
 
-    toggleColorPicker = () => {
-        this.setState({ isColorPickerOpen: !this.state.isColorPickerOpen });
+    toggleColorPicker = (e) => {
+        if (e) {
+            e.preventDefault();
+            this.setState({ isColorPickerOpen: !this.state.isColorPickerOpen, buttonColorClicked: true });
+        }
     };
 
     deleteCard = () => {
@@ -39,9 +42,15 @@ class CardOptions extends React.Component {
         }
     };
 
-    handleClickOutside = () => {
+    handleClickOutside = (e) => {
+        e.preventDefault();
         this.colorPickerButton.focus();
-      };
+        if (this.state.buttonColorClicked) {
+            this.setState({ buttonColorClicked: false })
+        } else {
+            this.setState({ isColorPickerOpen: !this.state.isColorPickerOpen })
+        }
+    };
 
     render() {
         const { isCardNearRightBorder } = this.props;
