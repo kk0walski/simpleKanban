@@ -1,18 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import BoardContainer from './features/board/BoardContainer';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import { HeadProvider } from 'react-head';
 import * as serviceWorker from './serviceWorker';
+import './App.scss';
 
 const headTags = [];
 
 ReactDOM.render(
   <HeadProvider headTags={headTags}>
     <Provider store={store}>
-      <App />
+      <BoardContainer />
     </Provider>
   </HeadProvider>,
   document.getElementById('root')
