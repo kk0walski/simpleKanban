@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid'
+
 // Give every card in a list an _id and the color white UNLESS those properties already exist
 const appendAttributes = (list) => {
     let result = {}
@@ -107,5 +109,3 @@ You can edit the title of the board by clicking it. You can also change the colo
     };
     return board
 };
-
-export default createWelcomeBoard;
