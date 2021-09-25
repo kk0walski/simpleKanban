@@ -1,12 +1,12 @@
 import React from 'react';
 /*import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';*/
-import Board from './features/board/Board';
+import BoardContainer from './features/board/BoardContainer';
 import './App.scss';
 
 function App() {
   return (
-    <Board />
+    <BoardContainer />
   );
 }
 

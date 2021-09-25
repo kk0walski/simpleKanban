@@ -5,11 +5,12 @@ import { fetchBoard } from "./boardAPI";
 export const boardAsync = createAsyncThunk(
     'board/fetchBoard',
     async (id) => {
-      const response = await fetchBoard(id);
-      // The value we return becomes the `fulfilled` action payload
-      return response.data;
+        const response = await fetchBoard(id);
+        // The value we return becomes the `fulfilled` action payload
+        console.log(response)
+        return response.data;
     }
-  );
+);
 
 export const boardSlice = createSlice({
     name: 'board',
@@ -110,16 +111,20 @@ export const boardSlice = createSlice({
             state.cards = restOfCards;
         },
         changeCardColor: (state, action) => {
-            const {cardId, color } = action.payload;
+            const { cardId, color } = action.payload;
             state.cards[cardId].color = color
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(boardAsync.fulfilled, (state, action) => {
-            state = action.payload
-        })
-    }
-
+        builder
+            .addCase(boardAsync.fulfilled, (state, action) => {
+                const new_board = action.payload;
+                state.title = new_board.title;
+                state.columnOrder = new_board.columnOrder;
+                state.columns = new_board.columns;
+                state.cards = new_board.cards;
+            });
+    },
 });
 
 export const { move, editCard, addCard, addList, changeTitle, changeColor, changeListTitle, removeList, removeCard, changeCardColor } = boardSlice.actions;

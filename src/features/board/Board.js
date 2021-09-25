@@ -3,7 +3,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { connect } from "react-redux";
 import { Title, HeadProvider } from "react-head";
 import BoardHeader from './BoardHeader';
-import { move } from './boardSlice';
+import { move, boardAsync } from './boardSlice';
 import classnames from "classnames";
 import ListAdder from "./ListAdder";
 import Column from './Column';
@@ -52,6 +52,12 @@ class Board extends React.Component {
             });
         }
     };
+
+    componentDidMount(){
+        const {boardId} = this.props;
+        this.props.boardAsync(boardId)
+
+    }
 
     // Remove drag event listeners
     handleMouseUp = () => {
@@ -118,6 +124,6 @@ const mapStateToProps = (state) => ({
     board: state.board
 })
 
-const mapDispatchToProps = { move };
+const mapDispatchToProps = { move, boardAsync };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);
