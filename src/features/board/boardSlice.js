@@ -117,6 +117,9 @@ export const boardSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(boardAsync.pending, (state) => {
+                state.title = "Board Loading";
+            })
             .addCase(boardAsync.fulfilled, (state, action) => {
                 const new_board = action.payload;
                 state.title = new_board.title;
