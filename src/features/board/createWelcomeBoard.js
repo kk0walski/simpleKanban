@@ -1,5 +1,3 @@
-import { nanoid } from 'nanoid'
-
 // Give every card in a list an _id and the color white UNLESS those properties already exist
 const appendAttributes = (list) => {
     let result = {}
@@ -18,7 +16,7 @@ const createList = (title) => {
 }
 
 // Generate the initial showcase board that every user and guest gets when they first log in
-const createWelcomeBoard = userId => {
+export default function createWelcomeBoard(boardId){
     const list1 = createList("Welcome to React Kanban!")
     const list1_cards = appendAttributes([
         { text: "### An open source application inspired by Trello" },
@@ -92,7 +90,7 @@ You can edit the title of the board by clicking it. You can also change the colo
     ])
     list3[Object.keys(list3)[0]].taskIds = Object.keys(list3_cards)
     const board = {
-        _id: nanoid(),
+        _id: boardId,
         title: "Tutorial board",
         color: "blue",
         columnOrder: [Object.keys(list1)[0], Object.keys(list2)[0], Object.keys(list3)[0]],

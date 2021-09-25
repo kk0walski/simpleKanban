@@ -1,12 +1,26 @@
-import { createSlice } from '@reduxjs/toolkit';
-import createWelcomeBoard from './createWelcomeBoard';
+import { nanoid } from 'nanoid'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { fetchBoard } from "./boardAPI";
 
-
-const welcomeBoard = createWelcomeBoard();
+export const boardAsync = createAsyncThunk(
+    'board/fetchBoard',
+    async (id) => {
+      const response = await fetchBoard(id);
+      // The value we return becomes the `fulfilled` action payload
+      return response.data;
+    }
+  );
 
 export const boardSlice = createSlice({
     name: 'board',
-    initialState: welcomeBoard,
+    initialState: {
+        _id: nanoid(),
+        title: "New board",
+        color: "blue",
+        columnOrder: [],
+        columns: {},
+        cards: {}
+    },
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
         move: (state, action) => {
@@ -100,6 +114,11 @@ export const boardSlice = createSlice({
             state.cards[cardId].color = color
         }
     },
+    extraReducers: (builder) => {
+        builder.addCase(boardAsync.fulfilled, (state, action) => {
+            state = action.payload
+        })
+    }
 
 });
 
