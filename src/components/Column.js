@@ -4,7 +4,7 @@ import { Draggable} from 'react-beautiful-dnd';
 import ListHeader from "./ListHeader";
 import Cards from "./Cards";
 import CardAdder from './CardAdder';
-import "./Column.scss";
+import "../styles/Column.scss";
 
 
 export default class Column extends Component {

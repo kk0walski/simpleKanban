@@ -4,8 +4,8 @@ import Textarea from "react-textarea-autosize";
 import { Button, Wrapper, Menu, MenuItem } from "react-aria-menubutton";
 import { FaTrash } from "react-icons/fa";
 import { connect } from "react-redux";
-import { changeListTitle, removeList } from './boardSlice';
-import "./ListHeader.scss";
+import { changeListTitle, removeList } from '../features/board/boardSlice';
+import "../styles/ListHeader.scss";
 
 class ListTitle extends Component {
 

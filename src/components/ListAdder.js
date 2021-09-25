@@ -1,9 +1,9 @@
 import { nanoid } from 'nanoid';
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { addList } from './boardSlice';
+import { addList } from '../features/board/boardSlice';
 import Textarea from "react-textarea-autosize";
-import "./ListAdder.scss";
+import "../styles/ListAdder.scss";
 
 class ListAdder extends Component {
 

@@ -1,10 +1,10 @@
 import { nanoid } from 'nanoid';
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { addCard } from './boardSlice';
+import { addCard } from '../features/board/boardSlice';
 import Textarea from "react-textarea-autosize";
 import ClickOutside from "./ClickOutside";
-import "./CardAdder.scss";
+import "../styles/CardAdder.scss";
 
 class CardAdder extends Component {
 

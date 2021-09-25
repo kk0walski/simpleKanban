@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import classnames from "classnames";
 import { connect } from "react-redux";
-import { changeColor } from './boardSlice';
+import { changeColor } from '../features/board/boardSlice';
 import { FaCheck } from 'react-icons/fa';
 import { Button, Wrapper, Menu, MenuItem } from "react-aria-menubutton";
-import colorIcon from "../../assets/color-icon.png";
-import "./ColorPicker.scss";
+import colorIcon from "../assets/color-icon.png";
+import "../styles/ColorPicker.scss";
 
 class ColorPicker extends Component {
 

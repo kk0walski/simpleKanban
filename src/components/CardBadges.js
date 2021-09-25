@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { MdDoneAll } from 'react-icons/md';
-import "./CardBadges.scss";
+import "../styles/CardBadges.scss";
 
 class CardBadges extends Component {
   // Render badge showing amoung of checkboxes that are checked

@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import BoardContainer from './features/board/BoardContainer';
+import BoardContainer from './components/BoardContainer';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import { HeadProvider } from 'react-head';
 import * as serviceWorker from './serviceWorker';
-import './index.scss';
+import './styles/index.scss';
 
 const headTags = [];
 

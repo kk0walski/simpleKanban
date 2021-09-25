@@ -3,11 +3,11 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { connect } from "react-redux";
 import { Title, HeadProvider } from "react-head";
 import BoardHeader from './BoardHeader';
-import { move, boardAsync } from './boardSlice';
+import { move, boardAsync } from '../features/board/boardSlice';
 import classnames from "classnames";
 import ListAdder from "./ListAdder";
 import Column from './Column';
-import "./Board.scss";
+import "../styles/Board.scss";
 
 
 class InnerList extends React.PureComponent {

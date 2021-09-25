@@ -1,10 +1,10 @@
 import React from 'react';
 import { FaTrash } from "react-icons/fa";
 import { connect } from "react-redux";
-import { removeCard, changeCardColor } from './boardSlice';
+import { removeCard, changeCardColor } from '../features/board/boardSlice';
 import ClickOutside from "./ClickOutside";
-import colorIcon from "../../assets/color-icon.png";
-import "./CardOptions.scss";
+import colorIcon from "../assets/color-icon.png";
+import "../styles/CardOptions.scss";
 
 class CardOptions extends React.Component {
 

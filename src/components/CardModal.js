@@ -3,10 +3,10 @@ import Modal from "react-modal";
 import Textarea from "react-textarea-autosize";
 import CardBadges from './CardBadges';
 import { connect } from "react-redux";
-import { editCard } from './boardSlice';
-import { findCheckboxes } from './utils';
+import { editCard } from '../features/board/boardSlice';
+import { findCheckboxes } from '../features/board/utils';
 import CardOptions from "./CardOptions";
-import "./CardModal.scss";
+import "../styles/CardModal.scss";
 
 class CardModal extends Component {
 

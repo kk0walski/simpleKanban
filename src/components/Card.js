@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { Draggable } from 'react-beautiful-dnd';
 import { connect } from "react-redux";
-import { editCard } from './boardSlice';
+import { editCard } from '../features/board/boardSlice';
 import classnames from "classnames";
-import formatMarkdown from "./formatMarkdown";
+import formatMarkdown from "../features/board/formatMarkdown";
 import CardBadges from "./CardBadges";
-import { findCheckboxes } from "./utils";
+import { findCheckboxes } from "../features/board/utils";
 import CardModal from './CardModal';
-import "./Card.scss";
+import "../styles/Card.scss";
 
 class Card extends Component {
 

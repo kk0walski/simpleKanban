@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { changeTitle } from './boardSlice';
-import "./BoardTitle.scss";
+import { changeTitle } from '../features/board/boardSlice';
+import "../styles/BoardTitle.scss";
 
 class BoardTitle extends Component {
 
