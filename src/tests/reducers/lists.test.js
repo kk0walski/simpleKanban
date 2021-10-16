@@ -45,7 +45,7 @@ test('should change add card', () => {
         }
     }
     const state = listsReducer(currentState, action)
-    expect(state, newState)
+    expect(state).toEqual(newState)
 })
 
 test('should delete list name', () => {
@@ -64,7 +64,7 @@ test('should delete list name', () => {
         }
     }
     const state = listsReducer(currentState, action);
-    expect(state, newState)
+    expect(state).toEqual(newState)
 })
 
 test('should move card', () => {
@@ -91,7 +91,7 @@ test('should move card', () => {
         }
     }
     const state = listsReducer(currentState, action)
-    expect(state, newState)
+    expect(state).toEqual(newState)
 })
 
 test('should move card', () => {
@@ -120,14 +120,14 @@ test('should move card', () => {
     const action = {
         type: 'MOVE_CARD',
         payload: {
-            oldCardIndex: 0,
+            oldCardIndex: 1,
             newCardIndex: 0,
             sourceListId: 'list-1',
             destListId: 'list-2'
         }
     }
     const state = listsReducer(currentState, action)
-    expect(state, newState)
+    expect(state).toEqual(newState)
 })
 
 test('should delete card', () => {
@@ -152,5 +152,5 @@ test('should delete card', () => {
         }
     }
     const state = listsReducer(currentState, action)
-    expect(state, newState)
+    expect(state).toEqual(newState)
 })
