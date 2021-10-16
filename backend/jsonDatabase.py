@@ -12,9 +12,7 @@ class JSONDatabase:
         return reasult
 
     def deleteList(self, listId):
-        newLists = self.data['board']['lists']
-        newLists.remove(listId)
-        self.data['board']['lists'] = newLists
+        self.data['board']['lists'].remove(listId)
         deleteList = self.data['lists'][listId]
         for cardId in deleteList['cards']:
             self.data['cards'].pop(cardId)
