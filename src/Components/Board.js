@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import '@atlaskit/css-reset';
 import List from './List';
 import ListAdder from './ListAdder';
 import { startMoveList, startMoveCard, startGetBoard } from '../actions/dataActions';
