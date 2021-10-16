@@ -48,7 +48,7 @@ class CardAdder extends Component {
                     <form onSubmit={this.addCard}>
                         <Textarea
                             autoFocus
-                            useCacheForDOMMeasurements
+                            usecachefordommeasurements
                             minRows={1}
                             value={newTitle}
                             onChange={this.titleChange}
@@ -56,7 +56,7 @@ class CardAdder extends Component {
                         />
                         <Textarea
                             autoFocus
-                            useCacheForDOMMeasurements
+                            usecachefordommeasurements
                             minRows={1}
                             value={newText}
                             onChange={this.contentChange}

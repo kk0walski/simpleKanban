@@ -58,7 +58,7 @@ class ListAdder extends Component {
         <div className="list">
           <Textarea
             autoFocus
-            useCacheForDOMMeasurements
+            usecachefordommeasurements
             value={listTitle}
             onChange={this.handleChange}
             onKeyDown={this.handleKeyDown}

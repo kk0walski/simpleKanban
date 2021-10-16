@@ -67,14 +67,13 @@ class ListHeader extends Component {
     render() {
         const { isOpen, newTitle } = this.state;
         const { dragHandleProps, listTitle } = this.props;
-        console.log("Title: ", listTitle)
         return (
           <div className="list-header">
             {isOpen ? (
               <div className="list-title-textarea-wrapper">
                 <Textarea
                   autoFocus
-                  useCacheForDOMMeasurements
+                  usecachefordommeasurements
                   value={newTitle}
                   onChange={this.handleChange}
                   onKeyDown={this.handleKeyDown}

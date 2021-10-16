@@ -85,7 +85,7 @@ class Card extends Component {
                         <form>
                             <Textarea
                                 autoFocus
-                                useCacheForDOMMeasurements
+                                usecachefordommeasurements
                                 minRows={1}
                                 value={newTitle}
                                 onChange={this.titleChange}
@@ -94,7 +94,7 @@ class Card extends Component {
                             />
                             <Textarea
                                 autoFocus
-                                useCacheForDOMMeasurements
+                                usecachefordommeasurements
                                 minRows={1}
                                 value={newContent}
                                 onChange={this.contentChange}
