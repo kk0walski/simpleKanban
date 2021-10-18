@@ -1,4 +1,4 @@
-from setup_database import Board, Base, List, Card
+from setup_database import Board, List, Card
 from flask import jsonify
 
 
@@ -21,7 +21,7 @@ def getBoard(session):
     return jsonify(result)
             
 
-def getLists(session, listId):
+def getLists(session):
     result = {}
     lists = session.query(List).all()
     for lista in lists:
