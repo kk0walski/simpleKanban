@@ -21,6 +21,12 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(message, self.testDatabase.getData())
         self.assertEqual(response.status_code, 200)
 
+    def getList(self, listId):
+        response = self.tester.get('/api/lists/{}'.format(listId), content_type='json/text')
+        message = response.get_json()
+        self.assertEqual(message, self.testDatabase.getList(listId))
+        self.assertEqual(response.status_code, 200)
+
     def delete_list(self, listId):
         response = self.tester.delete('/api/lists/{}'.format(listId), content_type='json/text')
         message = response.get_json()
@@ -54,7 +60,7 @@ class FlaskTestCase(unittest.TestCase):
     def add_card(self, listId, cardId, cardTitle, cardContent):
         newCard = {'listId': listId, 'cardId': cardId, 'title': cardTitle, 'content': cardContent}
         payload = {'payload': newCard}
-        response = self.tester.post('/api/cards', data=json.dumps(payload), content_type='application/json')
+        response = self.tester.post('/api/lists/{}'.format(listId), data=json.dumps(payload), content_type='application/json')
         message = response.get_json()
         self.assertEqual(message, self.testDatabase.addCard(newCard))
         self.assertEqual(response.status_code, 200)
@@ -76,10 +82,10 @@ class FlaskTestCase(unittest.TestCase):
         self.assertEqual(message, self.testDatabase.updateCard(cardId, newTitle, newContent))
         self.assertEqual(response.status_code, 200)
 
-    def deleteCard(self, cardId):
-        response = self.tester.delete('/api/cards/{}'.format(cardId), content_type='json/text')
+    def deleteCard(self, listId, cardId):
+        response = self.tester.delete('/api/lists/{}/{}'.format(listId, cardId), content_type='json/text')
         message = response.get_json()
-        self.assertEqual(message, self.testDatabase.deleteCard(cardId))
+        self.assertEqual(message, self.testDatabase.deleteCard(listId, cardId))
         self.assertEqual(response.status_code, 200)
 
     def test_hello(self):
@@ -97,6 +103,7 @@ class FlaskTestCase(unittest.TestCase):
     def testUpdateCard(self):
         self.add_list('list-1', 'list-1')
         self.add_card('list-1', 'card-1', 'card-1', 'content-card-1')
+        self.getList('list-1')
         self.add_list('list-2', 'list-2')
         self.updateCard('card-1', 'new-card-1', 'new-card-1')
         self.getBoard()
@@ -104,13 +111,16 @@ class FlaskTestCase(unittest.TestCase):
     def testRemoveCard(self):
         self.add_list('list-1', 'list-1')
         self.add_card('list-1', 'card-1', 'card-1', 'content-card-1')
+        self.getList('list-1')
         self.add_list('list-2', 'list-2')
-        self.deleteCard('card-1')
+        self.deleteCard('list-1', 'card-1')
+        self.getList('list-1')
         self.getBoard()
 
     def testAddCard(self):
         self.add_list('list-1', 'list-1')
         self.add_card('list-1', 'card-1', 'card-1', 'content-card-1')
+        self.getList('list-1')
         self.add_list('list-2', 'list-2')
         self.getBoard()
 
@@ -123,17 +133,22 @@ class FlaskTestCase(unittest.TestCase):
     def testMoveCard(self):
         self.add_list('list-1', 'list-1')
         self.add_card('list-1', 'card-1', 'card-1', 'content-card-1')
+        self.getList('list-1')
         self.add_list('list-2', 'list-2')
         self.move_card(0, 0,'list-1', 'list-2')
+        self.getList('list-1')
+        self.getList('list-2')
         self.getBoard()
 
     def testDeleteList(self):
         self.add_list('list-1', 'list-1')
         self.add_card('list-1', 'card-1', 'card-1', 'content-card-1')
+        self.getList('list-1')
         self.add_list('list-2', 'list-2')
         self.add_card('list-1', 'card-2', 'card-2', 'content-card-2')
         self.add_card('list-1', 'card-3', 'card-3', 'content-card-3')
         self.add_card('list-1', 'card-4', 'card-4', 'content-card-4')
+        self.getList('list-1')
         self.delete_list('list-1')
         self.getBoard()
 

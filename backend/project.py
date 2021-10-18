@@ -6,7 +6,6 @@ from sqlalchemy.orm.exc import NoResultFound
 from flask_cors import CORS, cross_origin
 from configuration import BaseConfig, TestingConfig, DevelopmentConfig
 from databaseFunctions import (
-    deleteCard,
     getBoard,
     getLists,
     getList,
@@ -113,10 +112,16 @@ def create_app(test_config=False):
             else:
                 return jsonify({"reasult": "failure", "error": 400}), 400
 
-    @app.route("/api/lists/<string:list_id>", methods=["PUT", "GET", "DELETE"])
+    @app.route("/api/lists/<string:list_id>", methods=["PUT", "GET", "POST", "DELETE"])
     def rudList(list_id):
         try:
-            if request.method == "PUT":
+            if request.method == "POST":
+                if request.is_json:
+                    return (
+                        addCard(session, list_id, request.get_json()["payload"]),
+                        200,
+                    )
+            elif request.method == "PUT":
                 if request.is_json:
                     return (
                         updateList(session, list_id, request.get_json()["payload"]),
@@ -144,34 +149,33 @@ def create_app(test_config=False):
                 400,
             )
 
-    @app.route("/api/cards", methods=["GET", "POST"])
-    def crCards():
+    @app.route("/api/lists/<string:list_id>/<string:card_id>", methods=["DELETE"])
+    def _deleteCard(list_id, card_id):
+        try:
+            if request.method == "DELETE":
+                return deleteCard(session, list_id, card_id), 200
+        except NoResultFound:
+            return jsonify({"reasult": "failure", "error": 404}), 404
+        except KeyError as e:
+            return (
+                jsonify(
+                    {
+                        "reasult": 'I got a KeyError - reason "%s"' % str(e),
+                        "error": 400,
+                    }
+                ),
+                400,
+            )
+
+    @app.route("/api/cards", methods=["GET"])
+    def rCards():
         if request.method == "GET":
             return getCards(session), 200
-        if request.method == "POST":
-            if request.is_json:
-                try:
-                    return (
-                        addCard(session, request.get_json()["payload"]),
-                        200,
-                    )
-                except NoResultFound:
-                    return jsonify({"reasult": "failuse", "error": 404}), 404
-                except KeyError as e:
-                    return (
-                        jsonify(
-                            {
-                                "reasult": 'I got a KeyError - reason "%s"' % str(e),
-                                "error": 400,
-                            }
-                        ),
-                        400,
-                    )
-            else:
-                return jsonify({"reasult": "failure", "error": 400}), 400
+        else:
+            return jsonify({"reasult": "failure", "error": 400}), 400
 
-    @app.route("/api/cards/<string:card_id>", methods=["GET", "PUT", "DELETE"])
-    def rudCard(card_id):
+    @app.route("/api/cards/<string:card_id>", methods=["GET", "PUT"])
+    def ruCard(card_id):
         try:
             if request.method == "PUT":
                 if request.is_json:
@@ -183,8 +187,6 @@ def create_app(test_config=False):
                     return jsonify({"reasult": "failure", "error": 400}), 400
             elif request.method == "GET":
                 return getCard(session, card_id), 200
-            elif request.method == "DELETE":
-                return deleteCard(session, card_id), 200
         except NoResultFound:
             return jsonify({"reasult": "failure", "error": 404}), 404
         except KeyError as e:

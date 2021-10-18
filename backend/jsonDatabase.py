@@ -7,8 +7,7 @@ class JSONDatabase:
         self.data = {'board': [], 'cards': {}, 'lists': {}}
 
     def getData(self):
-        reasult = {'board': self.data['board']['lists'],
-                   'cards': self.data['cards'], 'lists': self.data['lists']}
+        reasult = self.data['board']['lists']
         return reasult
 
     def deleteList(self, listId):
@@ -21,6 +20,10 @@ class JSONDatabase:
             'lista': deleteList, 'lists': self.data['board']
         }
         return reasult
+
+    def getList(self, listId):
+        editList = self.data['lists'][listId]
+        return editList
 
     def updateList(self, listId, newTitle):
         editList = self.data['lists'][listId]
@@ -106,9 +109,8 @@ class JSONDatabase:
         self.data['cards'][cardId] = editCard
         return editCard
 
-    def deleteCard(self, cardId):
+    def deleteCard(self, listId, cardId):
         deleteCard = self.data['cards'][cardId]
-        listId = deleteCard['lista']
         lista = self.data['lists'][listId]
         cardsOrder = lista['cards']
         cardsOrder.remove(cardId)

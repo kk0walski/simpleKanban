@@ -8,17 +8,7 @@ def moveInPlace(lista, oldIndex, newIndex):
 
 def getBoard(session):
     board = session.query(Board).first()
-    result = {}
-    result["board"] = board.serialize["lists"]
-    result["lists"] = {}
-    result["cards"] = {}
-    lists = session.query(List).all()
-    for i in lists:
-        result["lists"][i.serialize["id"]] = i.serialize
-    cards = session.query(Card).all()
-    for i in cards:
-        result["cards"][i.serialize["id"]] = i.serialize
-    return jsonify(result)
+    return jsonify(board.serialize["lists"])
             
 
 def getLists(session):
@@ -31,7 +21,7 @@ def getLists(session):
 
 def getList(session, listId):
     _list = session.query(List).filter_by(id=listId).one()
-    return jsonify(_list)
+    return jsonify(_list.serialize)
 
 
 def moveList(session, payload):
@@ -103,8 +93,7 @@ def moveToList(lista1, lista2, oldIndex, newIndex):
     lista2.insert(newIndex, lista1.pop(oldIndex))
 
 
-def addCard(session, payload):
-    listId = payload["listId"]
+def addCard(session, listId, payload):
     cardId = payload["cardId"]
     title = payload["title"]
     content = payload["content"]
@@ -175,9 +164,8 @@ def moveCard(session, payload):
         return jsonify({"lista1": _list1.serialize, "lista2": _list2.serialize})
 
 
-def deleteCard(session, cardId):
+def deleteCard(session, listId, cardId):
     _card = session.query(Card).filter_by(id=cardId).one()
-    listId = _card.lista
     _list = session.query(List).filter_by(id=listId).one()
     cardsOrder = [] if _list.cardsOrder == '[]' else _list.cardsOrder[1:-1].split(', ')
     cardsOrder.remove(cardId)
