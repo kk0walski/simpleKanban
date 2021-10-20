@@ -58,9 +58,6 @@ def create_app(test_config=False):
     def hello_world():
         return "Hello, World!"
 
-    def moveInPlace(lista, oldIndex, newIndex):
-        lista[oldIndex], lista[newIndex] = lista[newIndex], lista[oldIndex]
-
     @app.route("/api/board", methods=["GET", "PUT"])
     @catch_errors
     def board():
