@@ -1,3 +1,4 @@
+import os
 import functools
 from flask import Flask, jsonify, request
 from sqlalchemy import create_engine
@@ -22,7 +23,6 @@ from databaseFunctions import (
     deleteCard,
 )
 
-
 def catch_errors(f):
     @functools.wraps(f)
     def inner(*args, **kwargs):
@@ -40,15 +40,15 @@ def catch_errors(f):
 
     return inner
 
-
 def create_app(test_config=False):
     app = Flask(__name__)
     if test_config:
         app.config.from_object(TestingConfig)
     else:
         app.config.from_object(DevelopmentConfig)
+    app.config.update(SECRET_KEY=os.urandom(24))
 
-    engine = create_engine(app.config["DATABASE"])
+    engine = create_engine(app.config["DATABASE"], connect_args={'check_same_thread': False},)
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
@@ -57,6 +57,7 @@ def create_app(test_config=False):
     @app.route("/")
     def hello_world():
         return "Hello, World!"
+
 
     @app.route("/api/board", methods=["GET", "PUT"])
     @catch_errors

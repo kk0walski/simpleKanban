@@ -52,9 +52,9 @@ def createList(session, payload):
 
 
 def updateList(session, listId, payload):
-    title = payload["title"]
+    new_title = payload["title"]
     _list = session.query(List).filter_by(id=listId).one()
-    _list.title = title
+    _list.title = new_title
     session.add(_list)
     session.commit()
     return jsonify(_list.serialize)

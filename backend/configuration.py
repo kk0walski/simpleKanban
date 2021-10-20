@@ -8,6 +8,7 @@ class DevelopmentConfig(BaseConfig):
     DEBUG = True
     TESTING = True
     DATABASE = 'sqlite:///board.db'
+    
 
 class TestingConfig(BaseConfig):
     DEBUG = False
